@@ -7,7 +7,6 @@ import Tooltip from 'primevue/tooltip'
 import KeyFilter from 'primevue/keyfilter'
 import StyleClass from 'primevue/styleclass'
 import AnimateOnScroll from 'primevue/animateonscroll'
-import Preset from '@/styles/theme/presets/aura-brand.js'
 import Locale from './primevue/locale.json'
 
 const registerPlugins = (app) => {
@@ -15,7 +14,7 @@ const registerPlugins = (app) => {
 
   app.use(PrimeVue, {
     theme: {
-      preset: Preset,
+      // preset: '',
       options: {
         darkModeSelector: '.dark-mode',
         cssLayer: {

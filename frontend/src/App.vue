@@ -12,9 +12,6 @@ onUnmounted(() => {
   cleanupViewportFallback()
 })
 
-// Используем централизованную систему анимаций
-const { createAnimationProps } = useChatAnimations()
-
 // Управление переходами между страницами
 const router = useRouter()
 const transitionType = ref('fade')
@@ -28,18 +25,6 @@ router.beforeEach((to, from) => {
   } else {
     transitionType.value = 'fade'
   }
-})
-
-// Получаем анимационные пропсы из централизованной системы
-const pageAnimationProps = computed(() => {
-  const presetMap = {
-    fade: 'pageTransitionFade',
-    'auth-to-chat': 'pageTransitionAuthToChat',
-    'chat-to-auth': 'pageTransitionChatToAuth',
-  }
-  
-  const presetName = presetMap[transitionType.value] || presetMap.fade
-  return createAnimationProps(presetName)
 })
 </script>
 
@@ -75,7 +60,6 @@ const pageAnimationProps = computed(() => {
       <AnimatePresence mode="wait">
         <motion.div
           :key="route.path"
-          v-bind="pageAnimationProps"
           class="w-full h-full overflow-hidden">
           <component :is="Component" />
         </motion.div>
