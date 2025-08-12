@@ -48,7 +48,6 @@ export default defineConfig({
       },
       transform(svg, collection, icon) {
         if (collection === 'custom' && !icon.includes('-original')) {
-          // Transform svg fill/stroke color
           svg = svg.replace(/(fill|stroke)=".+"/g, '$1="currentColor"')
         }
         return svg
@@ -68,7 +67,6 @@ export default defineConfig({
         {
           '@vueuse/core': [
             'onClickOutside',
-            'useScroll',
             'useDebounceFn',
           ],
           axios: [['default', 'axios']],

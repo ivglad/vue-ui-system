@@ -18,22 +18,6 @@ export const apiRefreshUser = async () => {
   return await api.get('/api/v1/auth/user')
 }
 
-export const apiGetChatHistory = async (params) => {
-  return await api.get('/api/v1/chat/history', { params })
-}
-
-export const apiSendChatMessage = async (data) => {
-  return await api.post('/api/v1/chat/send', data)
-}
-
-export const apiClearChatHistory = async () => {
-  return await api.post('/api/v1/chat/clear')
-}
-
-export const apiGetDocuments = async (params) => {
-  return await api.get('/api/v1/documents', { params })
-}
-
 // ----------------------------------------------------------------------------
 // Axios interceptors
 // ----------------------------------------------------------------------------

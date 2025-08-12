@@ -3,20 +3,16 @@
  * Решает проблему адресной строки на мобильных устройствах
  */
 
-/* CSS Custom Properties для viewport */
 :root {
-  /* Основные viewport единицы */
-  --viewport-height: 100vh; /* fallback для старых браузеров */
-  --viewport-height: 100dvh; /* динамическая высота для современных браузеров */
+  --viewport-height: 100vh;
+  --viewport-height: 100dvh;
 
-  /* Альтернативные viewport единицы */
-  --viewport-height-small: 100vh; /* fallback */
-  --viewport-height-small: 100svh; /* минимальная высота (с UI элементами) */
+  --viewport-height-small: 100vh;
+  --viewport-height-small: 100svh;
 
-  --viewport-height-large: 100vh; /* fallback */
-  --viewport-height-large: 100lvh; /* максимальная высота (без UI элементов) */
+  --viewport-height-large: 100vh;
+  --viewport-height-large: 100lvh;
 
-  /* Viewport с учетом safe area для iOS */
   --viewport-height-safe: calc(
     100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)
   );
@@ -25,7 +21,6 @@
   );
 }
 
-/* Fallback для браузеров без поддержки новых viewport единиц */
 @supports not (height: 100dvh) {
   :root {
     --viewport-height: calc(var(--vh, 1vh) * 100);
@@ -38,7 +33,6 @@
   }
 }
 
-/* Utility классы для viewport */
 .h-viewport {
   height: var(--viewport-height);
 }
@@ -59,17 +53,14 @@
   height: var(--viewport-height-safe);
 }
 
-/* Мобильные оптимизации */
 @media (max-width: 768px) {
   .h-viewport,
   .min-h-viewport {
-    /* Предотвращаем "резиновый" скролл */
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
   }
 }
 
-/* Специальные стили для iOS */
 @supports (-webkit-touch-callout: none) {
   .h-viewport-ios {
     height: var(--viewport-height-safe);

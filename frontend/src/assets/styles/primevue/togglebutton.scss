@@ -1,8 +1,0 @@
-@layer preset {
-  .p-togglebutton::before {
-    border-radius: var(
-      --p-togglebutton-content-border-radius,
-      var(--radius-control-sm)
-    );
-  }
-}

@@ -1,11 +1,6 @@
 <script setup>
 import { AnimatePresence, motion } from 'motion-v'
 
-const isDarkMode = computed(() => {
-  return document.body.classList.contains('p-dark-mode')
-})
-provide('isDarkMode', isDarkMode)
-
 // Инициализируем viewport fallback только для старых браузеров
 const { initViewportFallback, cleanupViewportFallback } = useViewportFallback()
 
@@ -56,10 +51,6 @@ const pageAnimationProps = computed(() => {
     <template #container="{ message, closeCallback }">
       <div class="app-toast p-toast-message-content">
         <div v-if="message.summary" class="app-toast-summary">
-          <!-- <i-custom-success-sign v-if="message.severity === 'success'" />
-          <i-custom-info-sign v-else-if="message.severity === 'info'" />
-          <i-custom-warning-sign v-else-if="message.severity === 'warn'" />
-          <i-custom-error-sign v-else-if="message.severity === 'error'" /> -->
           <span class="p-toast-summary fw-bold">{{ message.summary }}</span>
           <Button
             class="app-toast-close-button"
@@ -68,9 +59,6 @@ const pageAnimationProps = computed(() => {
             severity="secondary"
             rounded
             @click="closeCallback">
-            <template #icon>
-              <!-- <i-custom-cross class="text-color" /> -->
-            </template>
           </Button>
         </div>
         <div
@@ -102,26 +90,3 @@ const pageAnimationProps = computed(() => {
     pt:root:class="app-confirm-secondary" />
   <ConfirmPopup />
 </template>
-
-<style lang="scss">
-#app {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-width: 100vw;
-  min-height: var(--viewport-height);
-}
-
-main {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 100%;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-}
-</style>

@@ -1,34 +1,23 @@
-@use '@/assets/styles/variables' as *;
-@use '@/assets/styles/mixins' as *;
-
-@include font-face(400, 'Inter-VariableFont_opsz,wght');
-
-@layer app {
-  // Font sizes
-  .fs-xl {
-    font-size: $fs-xl;
-  }
-  .fs-l {
-    font-size: $fs-l;
-  }
-  .fs-m {
-    font-size: $fs-m;
-  }
-  .fs-s {
-    font-size: $fs-s;
-  }
-  .fs-xs {
-    font-size: $fs-xs;
-  }
-
-  // Font weights
-  .fw-bold {
-    font-weight: 700;
-  }
-  .fw-semibold {
-    font-weight: 600;
-  }
-  .fw-regular {
-    font-weight: 400;
+@mixin font-face($weight, $fileName) {
+  @font-face {
+    font-family: 'Inter';
+    font-weight: $weight;
+    font-style: normal;
+    font-display: auto;
+    unicode-range: U+000-5FF;
+    src: local('Inter'), url('/fonts/#{$fileName}.woff2') format('woff2');
   }
 }
+@mixin font-base($size: 1rem, $weight: 400, $line-height: 130%) {
+  font-family: 'Inter', sans-serif;
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $line-height;
+  letter-spacing: 0.5px;
+}
+@mixin font($size: 1rem, $weight: 400, $line-height: 130%) {
+  font-size: $size;
+  font-weight: $weight;
+}
+
+@include font-face(400, 'Inter-VariableFont_opsz,wght');

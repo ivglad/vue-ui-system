@@ -8,19 +8,9 @@ const routes = [
     component: () => import('@/views/Error.vue'),
   },
   {
-    path: '/',
-    name: 'Чат',
-    component: () => import('@/views/Chat.vue'),
-  },
-  {
     path: '/auth',
     name: 'Вход и регистрация',
     component: () => import('@/views/Auth.vue'),
-  },
-  {
-    path: '/chat',
-    name: 'Чат',
-    component: () => import('@/views/Chat.vue'),
   },
 ]
 
@@ -61,10 +51,8 @@ const errorMiddleware = (to, next, user) => {
 
 const middlewarePipeline = (context) => {
   const { to, next, userStore } = context
-  // Enable after authorization is implemented ---------------------->
   if (!authMiddleware(to, next, userStore)) return false
   if (!errorMiddleware(to, next, userStore.user)) return false
-  // Enable after authorization is implemented ----------------------<
   return true
 }
 
