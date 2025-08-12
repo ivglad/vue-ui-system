@@ -1,0 +1,17 @@
+@layer preset {
+  .p-dialog {
+    .p-dialog-header {
+      gap: var(--p-dialog-header-gap, 1rem);
+    }
+    .p-dialog-content {
+      padding: var(--p-dialog-content-padding, 1rem);
+    }
+    .p-dialog-footer {
+      gap: var(--p-dialog-footerGap, 1rem);
+    }
+    .p-dialog-title {
+      font-size: var(--p-dialog-title-fontSize, 1.6rem);
+      font-weight: var(--p-dialog-title-fontWeight, 600);
+    }
+  }
+}

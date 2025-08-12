@@ -1,0 +1,35 @@
+@layer preset {
+  .p-inputtext {
+    width: 100%;
+    &:not(.p-inputtext-sm):not(.p-inputtext-lg) {
+      min-height: var(--p-inputtext-app-min-height);
+    }
+    &::placeholder,
+    &:placeholder-shown {
+      color: var(
+        --p-inputtext-placeholder-color,
+        var(--surface-200)
+      );
+    }
+    &.p-invalid::placeholder,
+    &.p-invalid:placeholder-shown {
+      color: var(
+        --p-inputtext-invalid-placeholder-color,
+        var(--surface-400)
+      );
+    }
+  }
+
+  .p-inputtext-sm {
+    min-height: var(--p-inputtext-app-sm-min-height);
+    font-size: var(--p-inputtext-app-sm-font-size);
+  }
+
+  .p-inputtext-lg {
+    min-height: var(--p-inputtext-app-lg-min-height);
+  }
+
+  .p-inputwrapper {
+    width: 100%;
+  }
+}

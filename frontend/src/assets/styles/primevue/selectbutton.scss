@@ -1,0 +1,7 @@
+@layer preset {
+  .p-selectbutton {
+    &::before {
+      border-radius: var(--radius-control-sm);
+    }
+  }
+}

@@ -1,0 +1,14 @@
+@layer preset {
+  .p-chip {
+    font-size: var(--p-chip-app-font-size);
+    .p-chip-label {
+      padding-block: 0;
+      padding-inline: var(--p-chip-padding-x);
+    }
+    .icon-close {
+      min-width: fit-content;
+      min-height: fit-content;
+      color: var(--p-chip-remove-icon-color);
+    }
+  }
+}

@@ -1,0 +1,16 @@
+@use 'reset';
+@forward '@/assets/styles/theme/index';
+@forward 'main';
+@forward 'no-tailwind';
+
+@forward '@/assets/styles/variables';
+@forward '@/assets/styles/mixins';
+
+@forward '@/assets/styles/fonts';
+@forward '@/assets/styles/animations';
+@forward '@/assets/styles/viewport';
+@forward '@/assets/styles/common';
+
+@forward '@/assets/styles/primevue/_index';
+
+@forward '@/assets/styles/components';

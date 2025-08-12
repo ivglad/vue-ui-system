@@ -1,0 +1,20 @@
+@layer preset {
+  .p-iconfield {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    & *:first-child.p-inputicon {
+      z-index: 1;
+      & + * input {
+        padding-inline-start: calc(
+          (var(--control-padding-x) * 2) + var(--icon-size-md)
+        );
+        padding-inline-end: var(--control-padding-x);
+      }
+    }
+    .p-inputicon {
+      top: unset;
+      margin-top: 0;
+    }
+  }
+} 
