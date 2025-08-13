@@ -26,23 +26,6 @@ define FRONTEND_COMMANDS
 endef
 export FRONTEND_COMMANDS
 
-define BACKEND_COMMANDS
-  term    - Открыть консоль бэкенда
-  logs    - Посмотреть логи бэкенда
-  clear   - Очистка кэша приложения
-  routes  - Отображение маршрутов приложения
-endef
-export BACKEND_COMMANDS
-
-define DB_COMMANDS
-  migrate - Миграция базы данных
-  seed    - Заполнение базы тестовыми данными
-  reset   - Сброс базы данных и миграция
-  fresh   - Пересоздание таблиц с миграцией
-  dump    - Создание дампа базы данных (автоопределение типа из backend/.env или DB_TYPE=mysql|postgres DUMP_PATH=./path)
-endef
-export DB_COMMANDS
-
 # Получение аргументов командной строки
 MAKECMDGOALS_LIST = $(MAKECMDGOALS)
 ifeq (d-build,$(firstword $(MAKECMDGOALS)))
@@ -54,31 +37,13 @@ ifeq (d-build,$(firstword $(MAKECMDGOALS)))
   endif
 endif
 
-# Обработка аргументов для команд frontend, backend и db
+# Обработка аргументов для команд frontend
 ifeq (frontend,$(firstword $(MAKECMDGOALS)))
   # Для frontend берем первый аргумент после frontend как команду
   FRONTEND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   # Убираем эти цели из обработки
   ifneq ($(FRONTEND_ARGS),)
     $(eval $(FRONTEND_ARGS):;@:)
-  endif
-endif
-
-ifeq (backend,$(firstword $(MAKECMDGOALS)))
-  # Для backend берем первый аргумент после backend как команду
-  BACKEND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  # Убираем эти цели из обработки
-  ifneq ($(BACKEND_ARGS),)
-    $(eval $(BACKEND_ARGS):;@:)
-  endif
-endif
-
-ifeq (db,$(firstword $(MAKECMDGOALS)))
-  # Для db берем первый аргумент после db как команду
-  DB_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  # Убираем эти цели из обработки
-  ifneq ($(DB_ARGS),)
-    $(eval $(DB_ARGS):;@:)
   endif
 endif
 
@@ -98,12 +63,6 @@ help: ## Информация о доступных командах
 	@echo ""
 	@echo "$(COLOR_INFO)frontend [команда]:$(COLOR_RESET)"
 	@echo "$$FRONTEND_COMMANDS"
-	@echo ""
-	@echo "$(COLOR_INFO)backend [команда]:$(COLOR_RESET)"
-	@echo "$$BACKEND_COMMANDS"
-	@echo ""
-	@echo "$(COLOR_INFO)db [команда]:$(COLOR_RESET)"
-	@echo "$$DB_COMMANDS"
 
 .PHONY: check-requirements
 check-requirements: ## Проверка наличия необходимых программ
@@ -130,18 +89,6 @@ validate-env: ## Валидация переменных окружения и �
 			errors=$$((errors + 1)); \
 		fi; \
 	fi; \
-	if [ ! -f backend/.env ]; then \
-		echo "$(COLOR_ERROR)❌ Файл backend/.env не найден$(COLOR_RESET)"; \
-		errors=$$((errors + 1)); \
-	else \
-		echo "$(COLOR_SUCCESS)✅ Файл backend/.env найден$(COLOR_RESET)"; \
-		for var in DB_HOST DB_PORT DB_DATABASE APP_KEY; do \
-			if ! grep -q "$$var=" backend/.env; then \
-				echo "$(COLOR_WARNING)⚠️  Переменная $$var не найдена в backend/.env$(COLOR_RESET)"; \
-				errors=$$((errors + 1)); \
-			fi; \
-		done; \
-	fi; \
 	if [ ! -f frontend/.env ]; then \
 		echo "$(COLOR_ERROR)❌ Файл frontend/.env не найден$(COLOR_RESET)"; \
 		errors=$$((errors + 1)); \
@@ -160,10 +107,7 @@ validate-env: ## Валидация переменных окружения и �
 env: ## Установка переменных окружения
 	@echo "Установка переменных окружения..."
 	cp -n .env.example .env || echo ".env уже существует"
-	cp -n backend/.env.example backend/.env || echo "backend/.env уже существует"
 	cp -n frontend/.env.example frontend/.env || echo "frontend/.env уже существует"
-
-
 
 ##############################################################################
 # DOCKER
@@ -239,13 +183,6 @@ d-status: check-requirements ## Проверка статуса контейне
 	fi
 
 ##############################################################################
-# ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
-##############################################################################
-
-# Функция проверки доступности сервиса
-check-service = $(shell $(DOCKER_COMPOSE) ps --services --filter "status=running" | grep -q "^$(1)$$" && echo "ok" || echo "fail")
-
-##############################################################################
 # ФРОНТЕНД
 ##############################################################################
 
@@ -277,100 +214,6 @@ frontend: check-requirements ## Выполнение команд для фро�
 		echo "$(COLOR_ERROR)Неизвестная команда: $(FRONTEND_ARGS)$(COLOR_RESET)"; \
 		echo "Доступные команды:"; \
 		echo "$$FRONTEND_COMMANDS"; \
-		exit 1; \
-	fi
-
-##############################################################################
-# БЭКЕНД
-##############################################################################
-
-.PHONY: backend
-backend: check-requirements ## Выполнение команд для бэкенда, использование: make backend [команда]
-	@if ! $(DOCKER_COMPOSE) ps --services --filter "status=running" | grep -q "^backend$$"; then \
-		echo "$(COLOR_ERROR)❌ Сервис backend не запущен$(COLOR_RESET)"; \
-		echo "$(COLOR_INFO)💡 Запустите контейнеры: make d-up$(COLOR_RESET)"; \
-		exit 1; \
-	fi
-	@if [ -z "$(BACKEND_ARGS)" ]; then \
-		echo "$(COLOR_ERROR)Требуется указать команду. Использование: make backend [команда]$(COLOR_RESET)"; \
-		echo "Доступные команды:"; \
-		echo "$$BACKEND_COMMANDS"; \
-		exit 1; \
-	elif [ "$(BACKEND_ARGS)" = "term" ]; then \
-		echo "Открытие консоли бэкенда..."; \
-		$(DOCKER_COMPOSE) exec backend bash; \
-	elif [ "$(BACKEND_ARGS)" = "logs" ]; then \
-		echo "Логи бэкенда..."; \
-		$(DOCKER_COMPOSE) logs -f backend; \
-	elif [ "$(BACKEND_ARGS)" = "routes" ]; then \
-		echo "Отображение маршрутов приложения..."; \
-		$(DOCKER_COMPOSE) exec backend php artisan route:list; \
-	elif [ "$(BACKEND_ARGS)" = "clear" ]; then \
-		echo "Очистка кэша приложения..."; \
-		$(DOCKER_COMPOSE) exec backend php artisan cache:clear; \
-		$(DOCKER_COMPOSE) exec backend php artisan config:clear; \
-		$(DOCKER_COMPOSE) exec backend php artisan route:clear; \
-		$(DOCKER_COMPOSE) exec backend php artisan view:clear; \
-	else \
-		echo "$(COLOR_ERROR)Неизвестная команда: $(BACKEND_ARGS)$(COLOR_RESET)"; \
-		echo "Доступные команды:"; \
-		echo "$$BACKEND_COMMANDS"; \
-		exit 1; \
-	fi
-
-##############################################################################
-# БАЗА ДАННЫХ
-##############################################################################
-
-.PHONY: db
-db: check-requirements ## Выполнение команд для базы данных, использование: make db [команда]
-	@if ! $(DOCKER_COMPOSE) ps --services --filter "status=running" | grep -q "^database$$"; then \
-		echo "$(COLOR_ERROR)❌ Сервис database не запущен$(COLOR_RESET)"; \
-		echo "$(COLOR_INFO)💡 Запустите контейнеры: make d-up$(COLOR_RESET)"; \
-		exit 1; \
-	fi
-	@if [ -z "$(DB_ARGS)" ]; then \
-		echo "$(COLOR_ERROR)Требуется указать команду. Использование: make db [команда]$(COLOR_RESET)"; \
-		echo "Доступные команды:"; \
-		echo "$$DB_COMMANDS"; \
-		exit 1; \
-	elif [ "$(DB_ARGS)" = "migrate" ]; then \
-		echo "Миграция базы данных..."; \
-		$(DOCKER_COMPOSE) exec backend php artisan migrate; \
-	elif [ "$(DB_ARGS)" = "seed" ]; then \
-		echo "Заполнение базы тестовыми данными..."; \
-		$(DOCKER_COMPOSE) exec backend php artisan db:seed; \
-	elif [ "$(DB_ARGS)" = "reset" ]; then \
-		echo "Сброс базы данных и миграция..."; \
-		$(DOCKER_COMPOSE) exec backend php artisan migrate:reset; \
-	elif [ "$(DB_ARGS)" = "fresh" ]; then \
-		echo "Пересоздание таблиц с миграцией..."; \
-		$(DOCKER_COMPOSE) exec backend php artisan migrate:fresh; \
-	elif [ "$(DB_ARGS)" = "dump" ]; then \
-		echo "Создание дампа базы данных..."; \
-		# Проверяем наличие ENV_VAR_DB_CONNECTION в backend/.env
-		if [ -f backend/.env ]; then \
-			DB_CONNECTION=$$(grep DB_CONNECTION backend/.env | cut -d '=' -f2 2>/dev/null); \
-		fi; \
-		# Если переменная DB_TYPE не задана, используем DB_CONNECTION или postgres по умолчанию
-		DB_TYPE=$$(echo $$DB_TYPE | tr '[:upper:]' '[:lower:]' || echo "$${DB_CONNECTION:-postgres}" | tr '[:upper:]' '[:lower:]'); \
-		DUMP_PATH=$$(echo $$DUMP_PATH || echo "."); \
-		echo "Используется тип базы данных: $$DB_TYPE"; \
-		if [ "$$DB_TYPE" = "mysql" ]; then \
-			echo "Создание дампа MySQL в $$DUMP_PATH..."; \
-			$(DOCKER_COMPOSE) exec db mysqldump -u$${MYSQL_USER:-root} -p$${MYSQL_PASSWORD:-password} $${MYSQL_DATABASE:-laravel} > "$$DUMP_PATH/mysql_dump_$$(date +%Y%m%d_%H%M%S).sql"; \
-		elif [ "$$DB_TYPE" = "postgres" ]; then \
-			echo "Создание дампа PostgreSQL в $$DUMP_PATH..."; \
-			$(DOCKER_COMPOSE) exec db pg_dump -U $${POSTGRES_USER:-postgres} $${POSTGRES_DB:-laravel} > "$$DUMP_PATH/postgres_dump_$$(date +%Y%m%d_%H%M%S).sql"; \
-		else \
-			echo "$(COLOR_ERROR)Неизвестный тип базы данных: $$DB_TYPE. Используйте mysql или postgres.$(COLOR_RESET)"; \
-			exit 1; \
-		fi; \
-		echo "Дамп базы данных создан в $$DUMP_PATH"; \
-	else \
-		echo "$(COLOR_ERROR)Неизвестная команда: $(DB_ARGS)$(COLOR_RESET)"; \
-		echo "Доступные команды:"; \
-		echo "$$DB_COMMANDS"; \
 		exit 1; \
 	fi
 

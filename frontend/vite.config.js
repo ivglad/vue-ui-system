@@ -21,7 +21,6 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     watch: {
-      // В Docker/WSL2 события FS могут теряться — включаем polling по env
       usePolling:
         process.env.CHOKIDAR_USEPOLLING === '1' ||
         process.env.CHOKIDAR_USEPOLLING === 'true',
