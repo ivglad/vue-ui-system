@@ -14,12 +14,24 @@ const routes = [
   },
 ]
 
+// Dev-only Theme Designer route
+if (import.meta.env.DEV) {
+  routes.push({
+    path: '/theme',
+    name: 'Theme',
+    component: () => import('@/views/Theme.vue'),
+  })
+}
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
 })
 
 const authMiddleware = (to, next, userStore) => {
+  // Allow Theme Designer in dev without auth
+  if (import.meta.env.DEV && to.path === '/theme') return true
+
   let userInLocalStorage = null
   try {
     userInLocalStorage = JSON.parse(localStorage.getItem('user'))

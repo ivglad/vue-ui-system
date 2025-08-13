@@ -96,7 +96,7 @@ const getSlotName = (variant, state) => {
     border-radius: var(--radius-control-lg) var(--radius-control-lg) 0 0;
     background-color: var(--surface-100);
     .h2 {
-      @include fluid-text(24, 18);
+      // @include fluid-text(24, 18);
       font-weight: 600;
     }
   }
@@ -106,9 +106,9 @@ const getSlotName = (variant, state) => {
     max-width: 100%;
     background-color: var(--surface-50);
     overflow-x: auto;
-    @include mq(m) {
-      width: 100%;
-    }
+    // @include mq(m) {
+    //   width: 100%;
+    // }
     &:has(.raw-content-wrapper) {
       width: 100%;
       padding: 2rem 2rem 2rem 2rem;
@@ -131,19 +131,19 @@ const getSlotName = (variant, state) => {
     grid-template-columns: v-bind(gridTemplateColumns);
     gap: 2rem;
     width: 100%;
-    @include mq(m) {
-      grid-template-columns: 1fr;
-      grid-auto-flow: row;
-      gap: 0;
-    }
+    // @include mq(m) {
+    //   grid-template-columns: 1fr;
+    //   grid-auto-flow: row;
+    //   gap: 0;
+    // }
   }
 
   .grid-table-header {
     border-top-left-radius: var(--radius-control-lg);
     border-top-right-radius: var(--radius-control-lg);
-    @include mq(m) {
-      margin-bottom: 2rem;
-    }
+    // @include mq(m) {
+    //   margin-bottom: 2rem;
+    // }
 
     .header-cell {
       font-weight: 600;
@@ -152,20 +152,20 @@ const getSlotName = (variant, state) => {
         display: flex;
         justify-content: space-between;
         border-top-left-radius: var(--radius-control-lg);
-        @include mq(m) {
-          display: none;
-        }
+        // @include mq(m) {
+        //   display: none;
+        // }
         & span:last-child {
-          @include mq(m) {
-            display: none;
-          }
+          // @include mq(m) {
+          //   display: none;
+          // }
         }
       }
 
       &:not(.first-cell) {
-        @include mq(m) {
-          display: none;
-        }
+        // @include mq(m) {
+        //   display: none;
+        // }
       }
 
       &:last-child {
@@ -178,18 +178,18 @@ const getSlotName = (variant, state) => {
     display: flex;
     align-items: center;
     width: 100%;
-    @include mq(m) {
-      &:not(.first-cell):not(.header-cell) {
-        grid-column: 1 / -1;
-        padding-top: 0;
-      }
-      &.first-cell {
-        font-weight: 600;
-      }
-      &.first-cell:not(.header-cell) {
-        padding: 0.5rem 0.25rem;
-      }
-    }
+    // @include mq(m) {
+    //   &:not(.first-cell):not(.header-cell) {
+    //     grid-column: 1 / -1;
+    //     padding-top: 0;
+    //   }
+    //   &.first-cell {
+    //     font-weight: 600;
+    //   }
+    //   &.first-cell:not(.header-cell) {
+    //     padding: 0.5rem 0.25rem;
+    //   }
+    // }
 
     &.header-cell {
       min-height: 50px;
