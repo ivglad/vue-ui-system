@@ -1,5 +1,6 @@
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import PrimeVue from 'primevue/config'
+import Aura from '@primeuix/themes/aura'
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
 import DialogService from 'primevue/dialogservice'
@@ -14,7 +15,7 @@ const registerPlugins = (app) => {
 
   app.use(PrimeVue, {
     theme: {
-      // preset: '',
+      preset: Aura,
       options: {
         darkModeSelector: '.dark-mode',
         cssLayer: {

@@ -12,9 +12,6 @@ const { getElementAnimationProps } = usePageTransition({
   enterDelay: 0.2,
 })
 
-// Композабл для обработки ошибок
-const { handleAuthError, clearError } = useAuthErrorHandler()
-
 const initialValues = ref({
   email: '',
   password: '',
@@ -43,8 +40,6 @@ const { mutate: loginUserMutation, isPending: loginUserIsPending } =
 const loginSubmit = async (e) => {
   if (!e.valid) return
 
-  clearError()
-
   const { email, password } = e.states
 
   loginUserMutation(
@@ -54,12 +49,6 @@ const loginSubmit = async (e) => {
     },
     {
       onError: (error) => {
-        // Обрабатываем ошибку через композабл
-        handleAuthError(error, {
-          action: 'login',
-          context: { email: email.value },
-        })
-
         // Помечаем поля как невалидные
         e.states.email.valid = false
         e.states.email.invalid = true

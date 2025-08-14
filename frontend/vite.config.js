@@ -59,6 +59,8 @@ export default defineConfig({
         'src/helpers/**',
         'src/stores/**',
         'src/utils/**',
+        'src/theme-designer/composables/**',
+        'src/theme-designer/utils/**',
       ],
       imports: [
         'vue',
