@@ -62,5 +62,3 @@ const toggleMenu = (event) => {
     </div>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped></style>

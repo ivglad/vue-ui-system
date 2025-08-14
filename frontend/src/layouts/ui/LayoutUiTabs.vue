@@ -59,13 +59,20 @@ const tabs = ref([
         <TabList>
           <Tab
             class="tab"
-            :class="`tab-${tab.id}`"
+            :class="[
+              `tab-${tab.id}`,
+              tab.id === 'draft'
+                ? 'text-[var(--surface-500)] hover:text-[inherit] active:text-[inherit]'
+                : ''
+            ]"
             v-for="(tab, index) in tabs"
             :key="tab.title"
             :value="tab.value"
             :disabled="index === 2">
             {{ tab.title }}
-            <Badge :value="tab.badgeValue"></Badge>
+            <Badge
+              :value="tab.badgeValue"
+              :class="tab.id === 'draft' ? 'bg-[var(--surface-500)] border-0' : ''"></Badge>
           </Tab>
         </TabList>
         <TabPanels>
@@ -77,16 +84,3 @@ const tabs = ref([
     </div>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped>
-.tab {
-  &-draft {
-    &:not(:hover):not(:active) {
-      color: var(--surface-500);
-    }
-    .p-badge {
-      background: var(--surface-500);
-    }
-  }
-}
-</style>

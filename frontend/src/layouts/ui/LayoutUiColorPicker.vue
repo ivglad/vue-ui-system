@@ -31,5 +31,3 @@ const colorPickerVariants = ['Default', 'Inline']
     </template>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped></style>

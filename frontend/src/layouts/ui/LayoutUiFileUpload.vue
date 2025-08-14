@@ -160,5 +160,3 @@ const fileUploadVariants = ['Default']
     </template>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped></style>

@@ -330,9 +330,9 @@ const selectVariants = [
           </Chip>
         </template>
         <template #option="slotProps">
-          <div class="option-content">
+          <div class="flex flex-col gap-2 py-2">
             <span class="fw-semibold">{{ slotProps.option.label }}</span>
-            <div class="option-content-info">
+            <div class="flex justify-between">
               <span class="fs-xs">Area:</span>
               <span class="fs-xs">{{ slotProps.option.area }} km²</span>
             </div>
@@ -344,18 +344,3 @@ const selectVariants = [
     </template>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss">
-// Стили для расширенных опций мультиселекта
-.option-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.5rem 0;
-
-  &-info {
-    display: flex;
-    justify-content: space-between;
-  }
-}
-</style>

@@ -113,7 +113,7 @@ const accordionVariants = ['Accordion', 'Panel', 'Fieldset', 'ScrollPanel']
 
     <!-- ScrollPanel -->
     <template #scrollpanel-default>
-      <ScrollPanel class="scrollpanel">
+      <ScrollPanel class="w-full h-[8rem]">
         <span class="fw-semibold">ScrollPanel</span>
         <p>
           ScrollPanel is a cross browser, lightweight and skinnable alternative
@@ -130,10 +130,3 @@ const accordionVariants = ['Accordion', 'Panel', 'Fieldset', 'ScrollPanel']
     </template>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped>
-.scrollpanel {
-  width: 100%;
-  height: 8rem;
-}
-</style>

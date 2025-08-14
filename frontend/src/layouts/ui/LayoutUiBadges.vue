@@ -71,5 +71,3 @@ const badgeVariants = [
     </template>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped></style>

@@ -58,5 +58,3 @@ const datePickerVariants = ['Default', 'Range']
     </template>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped></style>

@@ -7,36 +7,36 @@
         <div class="row">
           <span>Inter</span>
           <span>Regular</span>
-          <span class="fw-semibold">Semibold</span>
-          <span class="fw-bold">Bold</span>
+          <span class="font-semibold">Semibold</span>
+          <span class="font-bold">Bold</span>
         </div>
         <span>Fluid text:</span>
         <div class="row">
-          <div class="title mr-10">
-            <span class="h1 fw-bold">H1:</span>
-            <span class="h2 fw-bold">H2:</span>
-            <span class="h3 fw-bold">H3 </br> bold:</span>
-            <span class="h3 fw-semibold">H3 </br> semibold:</span>
-            <span class="h3">H3 </br> regular:</span>
-            <span class="h4 fw-bold">H4 </br> bold:</span>
-            <span class="h4 fw-semibold">H4 </br> semibold:</span>
-            <span class="h4">H4 </br> regular:</span>
-            <span class="h5 fw-bold">H5 </br> bold:</span>
-            <span class="h5 fw-semibold">H5 </br> semibold:</span>
-            <span class="h5">H5 </br> regular:</span>
+          <div class="mr-10 ui-typo-col">
+            <span class="font-bold ui-h1">H1:</span>
+            <span class="font-bold ui-h2">H2:</span>
+            <span class="font-bold ui-h3">H3 </br> bold:</span>
+            <span class="font-semibold ui-h3">H3 </br> semibold:</span>
+            <span class="ui-h3">H3 </br> regular:</span>
+            <span class="font-bold ui-h4">H4 </br> bold:</span>
+            <span class="font-semibold ui-h4">H4 </br> semibold:</span>
+            <span class="ui-h4">H4 </br> regular:</span>
+            <span class="font-bold ui-h5">H5 </br> bold:</span>
+            <span class="font-semibold ui-h5">H5 </br> semibold:</span>
+            <span class="ui-h5">H5 </br> regular:</span>
           </div>
-          <div class="text">
-            <span class="h1 fw-bold">Система предназначена</span>
-            <span class="h2 fw-bold">Система предназначена</span>
-            <span class="h3 fw-bold">Система предназначена</span>
-            <span class="h3 fw-semibold"> Система предназначена </span>
-            <span class="h3">Система предназначена</span>
-            <span class="h4 fw-bold">Система предназначена</span>
-            <span class="h4 fw-semibold"> Система предназначена </span>
-            <span class="h4">Система предназначена</span>
-            <span class="h5 fw-bold">Система предназначена</span>
-            <span class="h5 fw-semibold"> Система предназначена </span>
-            <span class="h5">Система предназначена</span>
+          <div class="ui-typo-col">
+            <span class="font-bold ui-h1">Система предназначена</span>
+            <span class="font-bold ui-h2">Система предназначена</span>
+            <span class="font-bold ui-h3">Система предназначена</span>
+            <span class="font-semibold ui-h3"> Система предназначена </span>
+            <span class="ui-h3">Система предназначена</span>
+            <span class="font-bold ui-h4">Система предназначена</span>
+            <span class="font-semibold ui-h4"> Система предназначена </span>
+            <span class="ui-h4">Система предназначена</span>
+            <span class="font-bold ui-h5">Система предназначена</span>
+            <span class="font-semibold ui-h5"> Система предназначена </span>
+            <span class="ui-h5">Система предназначена</span>
           </div>
         </div>
       </div>
@@ -44,26 +44,13 @@
   </LayoutUiTemplate>
 </template>
 
-<style lang="scss" scoped>
-.title,
-.text {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.h1 {
-  @include fluid-text(40, 20);
-}
-.h2 {
-  @include fluid-text(24, 18);
-}
-.h3 {
-  @include fluid-text(16, 16);
-}
-.h4 {
-  @include fluid-text(14, 14);
-}
-.h5 {
-  @include fluid-text(12, 12);
-}
+<style scoped>
+@reference "@/assets/styles/main.css";
+
+.ui-typo-col { @apply flex flex-col gap-4; }
+.ui-h1 { @apply text-[clamp(20px,4vw,40px)]; }
+.ui-h2 { @apply text-[clamp(18px,2.5vw,24px)]; }
+.ui-h3 { @apply text-[16px]; }
+.ui-h4 { @apply text-[14px]; }
+.ui-h5 { @apply text-[12px]; }
 </style>

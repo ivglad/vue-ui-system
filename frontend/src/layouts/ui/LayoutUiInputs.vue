@@ -409,5 +409,3 @@ const inputVariants = [
     </template>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped></style>

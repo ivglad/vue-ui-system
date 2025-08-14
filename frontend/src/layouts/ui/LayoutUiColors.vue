@@ -136,22 +136,24 @@ const copyColor = async (shade) => {
 <template>
   <LayoutUiTemplate title="Colors">
     <div class="content">
-      <div class="options">
-        <div>
-          <span class="fw-semibold">Copy:</span>
+      <div class="options flex flex-col gap-2 mb-8">
+        <div class="flex items-center gap-4">
+          <span class="font-semibold">Copy:</span>
           <SelectButton
             v-model="copyColorSwitch"
             :options="COPY_COLOR_TYPES"
             :allowEmpty="false" />
         </div>
-        <span class="fs-xs"
+        <span class="text-xs"
           >* копирует [<span
-            :class="{ 'copy-type-active': copyColorSwitch === 'HEX' }"
+            class="transition-colors"
+            :class="{ 'text-[var(--primary-500)]': copyColorSwitch === 'HEX' }"
             >цвет</span
           >
           /
           <span
-            :class="{ 'copy-type-active': copyColorSwitch === 'CSS Variable' }"
+            class="transition-colors"
+            :class="{ 'text-[var(--primary-500)]': copyColorSwitch === 'CSS Variable' }"
             >название переменной</span
           >] в буфер обмена</span
         >
@@ -161,23 +163,23 @@ const copyColor = async (shade) => {
         <table class="colors-table">
           <thead>
             <tr>
-              <th>Color</th>
-              <th v-for="(_, key) in colors[0].shades" :key="key" class="shade">
+              <th class="p-4 font-semibold first:pl-0">Color</th>
+              <th v-for="(_, key) in colors[0].shades" :key="key" class="shade p-0 text-center">
                 {{ key }}
               </th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="color in colors" :key="color.name" class="color">
-              <td>{{ color.name }}</td>
+              <td class="p-4">{{ color.name }}</td>
               <td
                 v-for="(shade, key) in color.shades"
                 :key="key"
-                class="shade"
+                class="shade p-0 text-center"
                 :class="`shade-${color.name}-${key}`"
                 :style="{ 'background-color': shade.value }">
                 <div
-                  class="color-value"
+                  class="color-value p-2 cursor-pointer"
                   :style="getFontColor(color.name, key)"
                   @click="copyColor(shade)">
                   {{ shade.value }}
@@ -190,52 +192,3 @@ const copyColor = async (shade) => {
     </div>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped>
-.options {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-  & > div {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  span {
-    @include transition;
-  }
-  .copy-type-active {
-    color: var(--primary-500);
-  }
-}
-
-.colors-table {
-  thead {
-    tr {
-      th {
-        padding: 1rem;
-        font-weight: 600;
-        &:first-child {
-          padding-left: 0;
-        }
-      }
-    }
-  }
-  tbody {
-    tr {
-      td {
-        padding: 1rem;
-      }
-    }
-  }
-  .shade {
-    padding: 0;
-    text-align: center;
-  }
-  .color-value {
-    padding: 0.5rem;
-    cursor: pointer;
-  }
-}
-</style>

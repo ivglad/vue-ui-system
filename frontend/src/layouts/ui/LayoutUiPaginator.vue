@@ -2,7 +2,7 @@
 
 <template>
   <LayoutUiTemplate title="Paginator">
-    <div class="content">
+    <div class="w-fit">
       <Paginator
         :rows="10"
         :totalRecords="120"
@@ -18,9 +18,3 @@
     </div>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped>
-.content {
-  width: fit-content;
-}
-</style>

@@ -20,5 +20,3 @@ const switchVariants = ['Default']
     </template>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped></style>

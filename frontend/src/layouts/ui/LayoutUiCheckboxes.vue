@@ -52,5 +52,3 @@ const checkboxVariants = ['Large', 'Default', 'Small']
     </template>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped></style>

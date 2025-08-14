@@ -42,10 +42,10 @@ const dynamicIcons = {
           </div>
         </div>
         <div class="row">
-          <!-- Импорт предзагруженных иконок из библиотеки https://icon-sets.iconify.design/fluent -->
-          <span>Внешняя библиотека:</span>
-          <i-fluent-home-16-regular />
-          <i-fluent-target-arrow-20-regular />
+          <!-- Импорт предзагруженных иконок из библиотеки https://icon-sets.iconify.design/ -->
+          <!-- <span>Внешняя библиотека:</span> -->
+          <!-- <i-fluent-home-16-regular /> -->
+          <!-- <i-fluent-target-arrow-20-regular /> -->
         </div>
       </div>
     </div>

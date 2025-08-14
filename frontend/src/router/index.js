@@ -12,6 +12,11 @@ const routes = [
     name: 'Вход и регистрация',
     component: () => import('@/views/Auth.vue'),
   },
+  {
+    path: '/ui',
+    name: 'UI',
+    component: () => import('@/views/Ui.vue'),
+  },
 ]
 
 const router = createRouter({
@@ -51,7 +56,7 @@ const errorMiddleware = (to, next, user) => {
 
 const middlewarePipeline = (context) => {
   const { to, next, userStore } = context
-  if (!authMiddleware(to, next, userStore)) return false
+  // if (!authMiddleware(to, next, userStore)) return false
   if (!errorMiddleware(to, next, userStore.user)) return false
   return true
 }

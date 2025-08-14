@@ -41,12 +41,32 @@ const paginatorDropdownStyle = {
     },
   },
 }
+
+// Tailwind стили PrimeVue DataTable через Pass-Through API
+const tablePt = {
+  table: {
+    class: 'w-full pb-0 border-separate border-spacing-0',
+  },
+  thead: {
+    class: 'text-[var(--surface-500)] bg-[var(--surface-100)]',
+  },
+  headerRow: {
+    class: 'h-12',
+  },
+  headerCell: {
+    class:
+      'py-4 pr-8 pl-4 text-left first:rounded-tl-[10px] last:rounded-tr-[10px]',
+  },
+  bodyRow: {
+    class: 'transition-colors',
+  },
+}
 </script>
 
 <template>
   <LayoutUiTemplate title="Table">
     <div class="content">
-      <div class="table">
+      <div class="flex flex-col gap-0 overflow-x-auto overflow-y-hidden">
         <DataTable
           v-model:selection="selectedCustomer"
           v-model:expandedRows="selectedCustomerExpandedRows"
@@ -64,6 +84,7 @@ const paginatorDropdownStyle = {
           stateStorage="session"
           stateKey="layout-ui-table"
           @update:selection="onSelectedRows"
+          :pt="tablePt"
           :pt:pcPaginator="paginatorDropdownStyle">
           <ColumnGroup type="header">
             <Row>
@@ -128,73 +149,3 @@ const paginatorDropdownStyle = {
     </div>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped>
-.table {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  :deep(table) {
-    width: 100%;
-    padding-bottom: 0;
-    border-collapse: separate;
-    border-spacing: 0;
-    thead {
-      color: var(--surface-500);
-      background: var(--surface-100);
-      tr {
-        height: 3rem;
-        &:first-child {
-          th {
-            &:first-child {
-              border-radius: 10px 0 0 0;
-            }
-            &:last-child {
-              border-radius: 0 10px 0 0;
-            }
-          }
-        }
-        &:nth-child(2) {
-          th {
-            text-align: left;
-          }
-        }
-        th {
-          padding: 1rem 2rem 1rem 1rem;
-          .th-title {
-            position: relative;
-            display: flex;
-            align-items: center;
-            flex-wrap: nowrap;
-            width: fit-content;
-            margin-right: 2rem;
-            .icon {
-              position: absolute;
-              left: calc(100% + 0.5rem);
-              transition: none;
-            }
-          }
-        }
-      }
-    }
-    tbody {
-      tr {
-        @include transition;
-      }
-      .row {
-        &-selected {
-          background: var(--primary-100);
-        }
-        &-disabled {
-          opacity: 0.4;
-          filter: grayscale(0.9);
-          user-select: none;
-          pointer-events: none;
-        }
-      }
-    }
-  }
-}
-</style>

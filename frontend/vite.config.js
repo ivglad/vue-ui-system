@@ -76,6 +76,7 @@ export default defineConfig({
       ],
       packagePresets: [
         'primevue',
+        '@primeuix/themes',
         '@primevue/core/api',
         '@primevue/forms/resolvers/zod',
         '@tanstack/vue-query',

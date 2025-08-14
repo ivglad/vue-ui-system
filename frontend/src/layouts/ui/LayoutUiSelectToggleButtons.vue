@@ -50,5 +50,3 @@ const toggleButtonVariants = ['SelectButton', 'ToggleButton']
     </template>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped></style>

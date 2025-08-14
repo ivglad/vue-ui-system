@@ -1,5 +1,7 @@
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import PrimeVue from 'primevue/config'
+import Preset from './primevue/preset.js'
+import Locale from './primevue/locale.json'
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
 import DialogService from 'primevue/dialogservice'
@@ -7,14 +9,13 @@ import Tooltip from 'primevue/tooltip'
 import KeyFilter from 'primevue/keyfilter'
 import StyleClass from 'primevue/styleclass'
 import AnimateOnScroll from 'primevue/animateonscroll'
-import Locale from './primevue/locale.json'
 
 const registerPlugins = (app) => {
   app.use(VueQueryPlugin)
 
   app.use(PrimeVue, {
     theme: {
-      // preset: '',
+      preset: Preset,
       options: {
         darkModeSelector: '.dark-mode',
         cssLayer: {

@@ -3,7 +3,7 @@
 <template>
   <LayoutUiTemplate title="Tags">
     <div class="content">
-      <div class="tags">
+      <div class="items-start">
         <Tag value="Primary"></Tag>
         <Tag severity="secondary" value="Secondary"></Tag>
         <Tag severity="success" value="Success"></Tag>
@@ -15,9 +15,3 @@
     </div>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped>
-.tags {
-  align-items: start;
-}
-</style>

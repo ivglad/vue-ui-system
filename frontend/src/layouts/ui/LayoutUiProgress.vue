@@ -3,7 +3,7 @@
 <template>
   <LayoutUiTemplate title="Progress">
     <div class="content">
-      <div class="progress">
+      <div class="flex flex-col gap-2">
         <ProgressBar
           mode="indeterminate"
           class="app-progressline"></ProgressBar>
@@ -13,11 +13,3 @@
     </div>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped>
-.progress {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-</style>

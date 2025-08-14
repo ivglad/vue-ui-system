@@ -69,5 +69,3 @@ const chipVariants = ['Default', 'Removable', 'Icon']
     </template>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped></style>

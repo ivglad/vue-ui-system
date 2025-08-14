@@ -32,5 +32,3 @@ const items = ref([
     </div>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped></style>

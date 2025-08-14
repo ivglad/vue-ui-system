@@ -128,23 +128,28 @@ const paginatorDropdownStyle = {
 <template>
   <LayoutUiTemplate title="Tanstack table">
     <div class="content">
-      <div class="table-tanstack">
-        <div class="table-wrapper">
-          <table>
-            <thead>
+      <div class="flex flex-col gap-0">
+        <div class="overflow-x-auto overflow-y-hidden">
+          <table class="w-full pb-0 border-separate border-spacing-0">
+            <thead class="text-[var(--surface-500)] bg-[var(--surface-100)]">
               <tr
-                v-for="headerGroup in table.getHeaderGroups()"
-                :key="headerGroup.id">
+                v-for="(headerGroup, hgIdx) in table.getHeaderGroups()"
+                :key="headerGroup.id"
+                class="h-12">
                 <th
-                  v-for="header in headerGroup.headers"
+                  v-for="(header, hIdx) in headerGroup.headers"
                   :key="header.id"
                   :colSpan="header.colSpan"
-                  :style="
-                    header.column.getCanSort() ? 'user-select: none;' : ''
-                  "
+                  :class="[
+                    'py-4 pl-4 pr-8',
+                    header.column.getCanSort() ? 'select-none' : '',
+                    hgIdx === 1 ? 'text-left' : '',
+                    hgIdx === 0 && hIdx === 0 ? 'rounded-tl-[10px]' : '',
+                    hgIdx === 0 && hIdx === headerGroup.headers.length - 1 ? 'rounded-tr-[10px]' : '',
+                  ]"
                   @click="header.column.getToggleSortingHandler()?.($event)">
                   <template v-if="!header.isPlaceholder">
-                    <div class="th-title">
+                    <div class="relative flex items-center flex-nowrap w-fit mr-8">
                       <FlexRender
                         :render="header.column.columnDef.header"
                         :props="header.getContext()" />
@@ -157,7 +162,8 @@ const paginatorDropdownStyle = {
                           header.column.getIsSorted() === 'asc'
                             ? 'transform: rotate(180deg);'
                             : ''
-                        " />
+                        "
+                        class="absolute left-[calc(100%+0.5rem)] transition-none" />
                     </div>
                   </template>
                 </th>
@@ -165,13 +171,21 @@ const paginatorDropdownStyle = {
             </thead>
             <tbody>
               <tr
-                v-for="row in table.getRowModel().rows"
+                v-for="(row, rIdx) in table.getRowModel().rows"
                 :key="row.id"
                 :class="[
-                  row.id == 2 ? 'row-disabled' : '',
-                  row.getIsSelected() ? 'row-selected' : '',
+                  'transition-colors',
+                  row.id == 2 ? 'opacity-40 select-none pointer-events-none grayscale' : '',
+                  row.getIsSelected() ? 'bg-[var(--surface-100)]' : '',
                 ]">
-                <td v-for="cell in row.getVisibleCells()" :key="cell.id">
+                <td
+                  v-for="(cell, cIdx) in row.getVisibleCells()"
+                  :key="cell.id"
+                  :class="[
+                    'py-2 pl-4 pr-8',
+                    rIdx === table.getRowModel().rows.length - 1 && cIdx === 0 ? 'rounded-bl-[10px]' : '',
+                    rIdx === table.getRowModel().rows.length - 1 && cIdx === row.getVisibleCells().length - 1 ? 'rounded-br-[10px]' : '',
+                  ]">
                   <FlexRender
                     :render="cell.column.columnDef.cell"
                     :props="cell.getContext()" />
@@ -207,88 +221,4 @@ const paginatorDropdownStyle = {
 </template>
 
 <style lang="scss" scoped>
-.table-wrapper {
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-.table-tanstack {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  table {
-    width: 100%;
-    padding-bottom: 0;
-    border-collapse: separate;
-    border-spacing: 0;
-    th,
-    td {
-      padding: 0.5rem 2rem 0.5rem 1rem;
-    }
-    thead {
-      color: var(--surface-500);
-      background: var(--surface-100);
-      tr {
-        height: 3rem;
-        &:first-child {
-          th {
-            &:first-child {
-              border-radius: 10px 0 0 0;
-            }
-            &:last-child {
-              border-radius: 0 10px 0 0;
-            }
-          }
-        }
-        &:nth-child(2) {
-          th {
-            text-align: left;
-          }
-        }
-        th {
-          padding: 1rem 2rem 1rem 1rem;
-          .th-title {
-            position: relative;
-            display: flex;
-            align-items: center;
-            flex-wrap: nowrap;
-            width: fit-content;
-            margin-right: 2rem;
-            .icon {
-              position: absolute;
-              left: calc(100% + 0.5rem);
-              transition: none;
-            }
-          }
-        }
-      }
-    }
-    tbody {
-      tr {
-        @include transition;
-        @include active {
-          background: var(--surface-100);
-        }
-        &:last-child {
-          td {
-            &:first-child {
-              border-radius: 0 0 0 10px;
-            }
-            &:last-child {
-              border-radius: 0 0 10px 0;
-            }
-          }
-        }
-      }
-    }
-  }
-  :deep(.row-selected) {
-    background: var(--surface-100);
-  }
-  :deep(.row-disabled) {
-    opacity: 0.4;
-    filter: grayscale(0.9);
-    user-select: none;
-    pointer-events: none;
-  }
-}
 </style>

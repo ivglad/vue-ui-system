@@ -331,7 +331,7 @@ const popupVariants = [
       <Button type="button" label="Выбрать" @click="togglePopover" />
       <Popover ref="popover" class="app-popover">
         <div
-          class="app-popover-element"
+          class="p-2 cursor-pointer hover:bg-[var(--surface-100)]"
           v-for="element in popoverElements"
           :key="element.name"
           @click="selectPopoverElement(element)">
@@ -354,7 +354,7 @@ const popupVariants = [
       </Button>
       <Menu ref="menu" :model="settings" :popup="true">
         <template #item="{ item }">
-          <div class="app-card-item">
+          <div class="flex items-center gap-2">
             <i-custom-search v-if="item.id == 0" />
             <i-custom-notifications v-if="item.id == 1" />
             {{ item.label }}
@@ -380,7 +380,7 @@ const popupVariants = [
 
     <!-- Tooltip -->
     <template #tooltip-default>
-      <div class="tooltip">
+      <div class="flex flex-wrap gap-4 max-w-[14rem]">
         <InputText
           v-tooltip.top="{
             value: 'Дополнительная информация',
@@ -392,27 +392,3 @@ const popupVariants = [
     </template>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped>
-.tooltip {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  max-width: 14rem;
-}
-
-.app-popover-element {
-  padding: 0.5rem;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--surface-100);
-  }
-}
-
-.app-card-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-</style>

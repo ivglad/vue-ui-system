@@ -215,25 +215,25 @@ const getElementAnimationProps = (elementName) => {
 </script>
 
 <template>
-  <div class="ui">
-    <div class="ui-header">
-      <div class="ui-header__palette">
-        <span class="ui-header__palette-title fw-bold">Цветовая палитра:</span>
-        <div class="ui-header__primary">
+  <div class="ui relative flex flex-col items-center gap-8 w-full h-full overflow-hidden pt-32 px-16 pb-24 md:pt-36 md:px-8 md:pb-16">
+    <div class="ui-header fixed top-0 left-0 flex items-center justify-center w-screen h-32 px-16 py-4 bg-(--surface-50) z-[1000] lg:h-36 md:px-8">
+      <div class="ui-header__palette flex items-center justify-between flex-wrap gap-4 w-full max-w-[1200px]">
+        <span class="ui-header__palette-title font-bold block w-full">Цветовая палитра:</span>
+        <div class="ui-header__primary flex items-center gap-2">
           <span>Primary:</span>
           <div
             v-for="color in PRIMARY_COLORS"
             :key="color"
-            class="ui-header__surface-color"
+            class="ui-header__surface-color size-8 rounded-full cursor-pointer"
             :style="getBackgroundColor(color)"
             @click="setPrimaryColor(color)"></div>
         </div>
-        <div class="ui-header__surface">
+        <div class="ui-header__surface flex items-center gap-2">
           <span>Surface:</span>
           <div
             v-for="color in SURFACE_COLORS"
             :key="color"
-            class="ui-header__surface-color"
+            class="ui-header__surface-color size-8 rounded-full cursor-pointer"
             :style="getBackgroundColor(color)"
             @click="setSurfaceColor(color)"></div>
         </div>
@@ -244,8 +244,8 @@ const getElementAnimationProps = (elementName) => {
       <h1>UI-KIT</h1>
     </Divider>
 
-    <div class="ui-layouts">
-      <div class="ui-layouts-toggle">
+    <div class="ui-layouts flex flex-col items-start gap-8 w-full max-w-[1200px]">
+      <div class="ui-layouts-toggle flex items-center flex-wrap gap-4 w-full">
         <ToggleButton
           v-model="updateLayoutsVisibility"
           onLabel="Скрыть все"
@@ -267,21 +267,21 @@ const getElementAnimationProps = (elementName) => {
           <motion.div
             v-if="isComponentSelected('LayoutUiFonts')"
             v-bind="getElementAnimationProps('LayoutUiFonts')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiFonts />
           </motion.div>
 
-          <!-- <motion.div
+          <motion.div
             v-if="isComponentSelected('LayoutUiIcons')"
             v-bind="getElementAnimationProps('LayoutUiIcons')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiIcons />
-          </motion.div> -->
+          </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiColors')"
             v-bind="getElementAnimationProps('LayoutUiColors')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiColors
               :primary-colors="PRIMARY_COLORS"
               :surface-colors="SURFACE_COLORS"
@@ -293,154 +293,154 @@ const getElementAnimationProps = (elementName) => {
           <motion.div
             v-if="isComponentSelected('LayoutUiButtons')"
             v-bind="getElementAnimationProps('LayoutUiButtons')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiButtons />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiInputs')"
             v-bind="getElementAnimationProps('LayoutUiInputs')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiInputs />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiAutocomplete')"
             v-bind="getElementAnimationProps('LayoutUiAutocomplete')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiAutocomplete />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiSelects')"
             v-bind="getElementAnimationProps('LayoutUiSelects')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiSelects />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiSelectToggleButtons')"
             v-bind="getElementAnimationProps('LayoutUiSelectToggleButtons')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiSelectToggleButtons />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiDatePickers')"
             v-bind="getElementAnimationProps('LayoutUiDatePickers')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiDatePickers />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiCheckboxes')"
             v-bind="getElementAnimationProps('LayoutUiCheckboxes')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiCheckboxes />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiRadios')"
             v-bind="getElementAnimationProps('LayoutUiRadios')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiRadios />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiSwitches')"
             v-bind="getElementAnimationProps('LayoutUiSwitches')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiSwitches />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiFileUpload')"
             v-bind="getElementAnimationProps('LayoutUiFileUpload')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiFileUpload />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiPopups')"
             v-bind="getElementAnimationProps('LayoutUiPopups')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiPopups />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiChips')"
             v-bind="getElementAnimationProps('LayoutUiChips')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiChips />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiBadges')"
             v-bind="getElementAnimationProps('LayoutUiBadges')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiBadges />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiTags')"
             v-bind="getElementAnimationProps('LayoutUiTags')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiTags />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiBreadcrumb')"
             v-bind="getElementAnimationProps('LayoutUiBreadcrumb')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiBreadcrumb />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiColorPicker')"
             v-bind="getElementAnimationProps('LayoutUiColorPicker')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiColorPicker />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiTabs')"
             v-bind="getElementAnimationProps('LayoutUiTabs')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiTabs />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiAccordion')"
             v-bind="getElementAnimationProps('LayoutUiAccordion')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiAccordion />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiPaginator')"
             v-bind="getElementAnimationProps('LayoutUiPaginator')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiPaginator />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiStepper')"
             v-bind="getElementAnimationProps('LayoutUiStepper')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiStepper />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiCard')"
             v-bind="getElementAnimationProps('LayoutUiCard')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiCard />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiCarousel')"
             v-bind="getElementAnimationProps('LayoutUiCarousel')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiCarousel
               v-animateonscroll="{
                 enterClass: 'animate-fadein',
@@ -452,21 +452,21 @@ const getElementAnimationProps = (elementName) => {
           <motion.div
             v-if="isComponentSelected('LayoutUiTable')"
             v-bind="getElementAnimationProps('LayoutUiTable')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiTable />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiTableTanstack')"
             v-bind="getElementAnimationProps('LayoutUiTableTanstack')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiTableTanstack />
           </motion.div>
 
           <motion.div
             v-if="isComponentSelected('LayoutUiProgress')"
             v-bind="getElementAnimationProps('LayoutUiProgress')"
-            class="ui-layout-animated-element">
+            class="ui-animated">
             <LayoutUiProgress />
           </motion.div>
         </AnimatePresence>
@@ -482,122 +482,18 @@ const getElementAnimationProps = (elementName) => {
 </template>
 
 <style lang="scss" scoped>
-.ui {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  width: 100%;
-  height: 100%;
-  padding: 8rem 4rem 6rem 4rem;
-  overflow: hidden;
-  @include mq(m) {
-    padding: 9rem 2rem 4rem 2rem;
-  }
+.ui-animated { @apply w-[inherit] overflow-hidden; }
 
-  &-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
-    height: 8rem;
-    padding: 1rem 4rem 1rem 4rem;
-    background: var(--surface-50);
-    z-index: 1000;
-    @include mq(l) {
-      height: 9rem;
-    }
-    @include mq(m) {
-      padding: 1rem 2rem 1rem 2rem;
-    }
-    &__palette {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-      width: calc(100% + 1.2rem);
-      max-width: 1200px;
-
-      &-title {
-        width: 100%;
-      }
-    }
-    &__primary,
-    &__surface {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      &-color {
-        width: 2rem;
-        height: 2rem;
-        border-radius: 50%;
-        cursor: pointer;
-      }
-    }
-  }
-
-  &-layouts {
+:deep(.content) {
+  & > * {
     display: flex;
     flex-direction: column;
-    align-items: start;
-    gap: 2rem;
-    width: 100%;
-    max-width: 1200px;
-
-    &-toggle {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      width: 100%;
-    }
-
-    &-components {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      width: 100%;
-    }
-
-    &-group {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      gap: 1rem;
-      border: 1px dashed var(--surface-300);
-      border-radius: var(--radius-control-lg);
-      padding: 1rem;
-
-      @include mq(l) {
-        flex-direction: column;
-      }
-    }
+    gap: 1rem;
   }
-
-  &-layout {
-    &-animated-element {
-      width: inherit;
-      overflow: hidden;
-    }
-  }
-
-  :deep(.content) {
-    & > * {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .row {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 }
 </style>

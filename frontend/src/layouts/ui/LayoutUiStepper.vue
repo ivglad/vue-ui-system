@@ -2,7 +2,7 @@
 
 <template>
   <LayoutUiTemplate title="Stepper">
-    <div class="content">
+    <div class="min-w-min">
       <Stepper :value="1" class="app-stepper">
         <StepList>
           <Step v-for="step in 3" :key="step" :value="step">
@@ -36,10 +36,3 @@
     </div>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped>
-.content {
-  min-width: min-content;
-  width: 50%;
-}
-</style>

@@ -81,5 +81,3 @@ const autocompleteVariants = ['Default input with icon', 'Autocomplete']
     ></template>
   </LayoutUiTemplate>
 </template>
-
-<style lang="scss" scoped></style>
