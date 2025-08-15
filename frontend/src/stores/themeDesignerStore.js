@@ -132,7 +132,7 @@ const MyPreset = definePreset(Base, {
 
 export default {
   preset: MyPreset,
-  options: { darkModeSelector: '.dark-mode', cssLayer: { name: 'default', order: 'reset, theme, base, default, preset, app' } }
+  options: { darkModeSelector: '.dark-mode', cssLayer: { name: 'default', order: 'reset, theme, base, default' } }
 }
 `
       return js

@@ -20,7 +20,7 @@ const registerPlugins = (app) => {
         darkModeSelector: '.dark-mode',
         cssLayer: {
           name: 'default',
-          order: 'reset, theme, base, default, preset, app',
+          order: 'reset, theme, base, default',
         },
       },
     },
