@@ -20,14 +20,6 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     strictPort: true,
-    watch: {
-      usePolling:
-        process.env.CHOKIDAR_USEPOLLING === '1' ||
-        process.env.CHOKIDAR_USEPOLLING === 'true',
-      interval: process.env.CHOKIDAR_INTERVAL
-        ? Number(process.env.CHOKIDAR_INTERVAL)
-        : 100,
-    },
   },
   plugins: [
     Vue(),

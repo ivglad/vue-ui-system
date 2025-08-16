@@ -83,9 +83,9 @@ const tablePt = {
           stripedRows
           stateStorage="session"
           stateKey="layout-ui-table"
-          @update:selection="onSelectedRows"
           :pt="tablePt"
-          :pt:pcPaginator="paginatorDropdownStyle">
+          :pt:pcPaginator="paginatorDropdownStyle"
+          @update:selection="onSelectedRows">
           <ColumnGroup type="header">
             <Row>
               <Column />

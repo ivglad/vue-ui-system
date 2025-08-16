@@ -58,6 +58,8 @@ const tabs = ref([
       <Tabs :value="0" scrollable>
         <TabList>
           <Tab
+            v-for="(tab, index) in tabs"
+            :key="tab.title"
             class="tab"
             :class="[
               `tab-${tab.id}`,
@@ -65,8 +67,6 @@ const tabs = ref([
                 ? 'text-[var(--surface-500)] hover:text-[inherit] active:text-[inherit]'
                 : ''
             ]"
-            v-for="(tab, index) in tabs"
-            :key="tab.title"
             :value="tab.value"
             :disabled="index === 2">
             {{ tab.title }}

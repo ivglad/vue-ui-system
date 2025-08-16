@@ -78,15 +78,15 @@ const inputVariants = [
       <div class="app-input">
         <InputText
           v-model="inputState.value"
-          :invalid="inputState.error.show"
           v-tooltip.top="{
             value: inputState?.error?.msg,
             showDelay: 500,
           }"
+          :invalid="inputState.error.show"
           @blur="errorHide" />
         <Message
-          class="app-input-message"
           v-if="inputState.error.show"
+          class="app-input-message"
           :severity="inputState.error.show ? 'error' : 'contrast'"
           variant="simple"
           size="small">
@@ -126,8 +126,8 @@ const inputVariants = [
         <InputText
           id="layout-ui-input-floatlabel-2-state"
           v-model="inputState.value"
-          @blur="errorHide"
-          disabled />
+          disabled
+          @blur="errorHide" />
         <label for="layout-ui-input-floatlabe-2-state">Логин</label>
       </FloatLabel>
     </template>
@@ -136,15 +136,15 @@ const inputVariants = [
         <InputText
           id="layout-ui-input-floatlabel-3-state"
           v-model="inputState.value"
-          @blur="errorHide"
-          :invalid="inputState.error.show"
           v-tooltip.top="{
             value: inputState?.error?.msg,
             showDelay: 500,
-          }" />
+          }"
+          :invalid="inputState.error.show"
+          @blur="errorHide" />
         <Message
-          class="app-input-message"
           v-if="inputState.error.show"
+          class="app-input-message"
           :severity="inputState.error.show ? 'error' : 'contrast'"
           variant="simple"
           size="small">
@@ -169,16 +169,16 @@ const inputVariants = [
       <div class="app-input">
         <Password
           v-model="inputState.value"
-          :invalid="inputState.error.show"
-          :feedback="false"
           v-tooltip.top="{
             value: inputState?.error?.msg,
             showDelay: 500,
           }"
+          :invalid="inputState.error.show"
+          :feedback="false"
           toggleMask />
         <Message
-          class="app-input-message"
           v-if="inputState.error.show"
+          class="app-input-message"
           :severity="inputState.error.show ? 'error' : 'contrast'"
           variant="simple"
           size="small">
@@ -302,8 +302,8 @@ const inputVariants = [
             :invalid="inputState.error.show"
             placeholder="(999) 999-9999" />
           <Message
-            class="app-input-message"
             v-if="inputState.error.show"
+            class="app-input-message"
             :severity="inputState.error.show ? 'error' : 'contrast'"
             variant="simple"
             size="small">
@@ -394,8 +394,8 @@ const inputVariants = [
             </InputIcon>
           </IconField>
           <Message
-            class="app-input-message"
             v-if="inputState.error.show"
+            class="app-input-message"
             :severity="inputState.error.show ? 'error' : 'contrast'"
             variant="simple"
             size="small">

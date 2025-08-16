@@ -42,33 +42,39 @@ const getSlotName = (variant, state) => {
 </script>
 
 <template>
-  <section class="ui-layout-display flex flex-col items-start w-full overflow-hidden rounded-[var(--radius-control-lg)]">
-    <div class="ui-layout-display__header flex items-center justify-start w-full px-8 py-4 bg-[var(--surface-100)]">
-      <h2 class="font-semibold text-xl md:text-2xl">{{ title }}</h2>
+  <section class="flex w-full flex-col items-start overflow-hidden">
+    <div class="flex w-full items-center justify-start px-8 py-4">
+      <h2 class="text-xl font-semibold">{{ title }}</h2>
     </div>
-    <div class="ui-layout-display__content w-fit max-w-full bg-[var(--surface-50)] overflow-x-auto px-8 pb-8">
-      <div class="raw-content-wrapper w-full pt-8" v-if="!states?.length">
+    <div class="w-full max-w-full overflow-x-auto px-8 pb-8">
+      <div v-if="!states?.length" class="w-fit pt-8">
         <slot />
       </div>
-      <div class="grid-table-wrapper flex flex-col w-full overflow-x-auto" v-else>
+      <div v-else class="flex w-fit flex-col">
         <!-- Заголовок таблицы -->
-        <div class="grid-table-header hidden md:grid w-full gap-8" :style="{ gridTemplateColumns }">
-          <div class="grid-cell header-cell first-cell font-semibold min-h-[50px] text-start">Variant</div>
+        <div
+          class="hidden w-full gap-8 md:grid"
+          :style="{ gridTemplateColumns }">
+          <div class="min-h-[50px] text-start font-semibold">Variant</div>
           <div
             v-for="state in states"
             :key="state"
-            class="grid-cell header-cell font-semibold min-h-[50px]">
+            class="min-h-[50px] font-semibold">
             {{ state }}
           </div>
         </div>
 
         <!-- Дополнительные варианты -->
-        <div v-for="variant in variants" :key="variant" class="grid-table-row grid w-full gap-8" :style="{ gridTemplateColumns }">
-          <div class="grid-cell first-cell text-start mb-4 md:font-semibold md:py-2 md:px-1">{{ variant }}</div>
-          <div v-for="state in states" :key="state" class="grid-cell w-full">
-            <div
-              class="grid-cell-slot w-full mb-8"
-              v-if="$slots[getSlotName(variant, state)]">
+        <div
+          v-for="variant in variants"
+          :key="variant"
+          class="grid w-full gap-8"
+          :style="{ gridTemplateColumns }">
+          <div class="mb-4 text-start md:px-1 md:py-2 md:font-semibold">
+            {{ variant }}
+          </div>
+          <div v-for="state in states" :key="state" class="w-full">
+            <div v-if="$slots[getSlotName(variant, state)]" class="mb-8 w-full">
               <slot :name="getSlotName(variant, state)"> </slot>
             </div>
           </div>
@@ -77,16 +83,3 @@ const getSlotName = (variant, state) => {
     </div>
   </section>
 </template>
-
-<style scoped>
-@media (max-width: 767px) {
-  .grid-table-header { display: none; }
-  .grid-table-row {
-    grid-template-columns: 1fr !important;
-    grid-auto-flow: row;
-    gap: 0;
-  }
-  .grid-cell.first-cell { font-weight: 600; }
-  .grid-cell.first-cell:not(.header-cell) { padding: 0.5rem 0.25rem; }
-}
-</style>

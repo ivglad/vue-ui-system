@@ -16,7 +16,7 @@ const items = ref([
   <LayoutUiTemplate title="Breadcrumb">
     <div class="content">
       <div>
-        <div class="row">
+        <div class="flex items-center gap-1 gap">
           <Breadcrumb :home="home" :model="items">
             <template #item="{ item }">
               <a class="cursor-pointer" href="#">

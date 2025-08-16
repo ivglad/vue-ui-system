@@ -2,81 +2,54 @@
 import { $dt } from '@primeuix/themes'
 import { AnimatePresence, motion, LayoutGroup } from 'motion-v'
 
-const LayoutUiButtons = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiButtons.vue'),
+// Динамическая карта асинхронных лэйаутов из директории `src/layouts/ui/`
+// Исключаем статические импорты: нет прямых тегов компонентов в шаблоне
+// Используем абсолютный путь, чтобы исключить влияние алиаса в dev-графе
+const layoutLoaders = import.meta.glob('/src/layouts/ui/*.vue', {
+  eager: false,
+})
+
+const AsyncLayouts = Object.fromEntries(
+  Object.entries(layoutLoaders).map(([path, loader]) => {
+    const name = path.split('/').pop().replace('.vue', '')
+    return [
+      name,
+      defineAsyncComponent({
+        loader,
+        // Отключаем Suspense-поведение для первого показа
+        suspensible: false,
+        delay: 150,
+        // Автоматический ретрай при временных ошибках загрузки чанка
+        onError(err, retry, fail, attempts) {
+          if (attempts <= 3) retry()
+          else fail()
+        },
+      }),
+    ]
+  }),
 )
-const LayoutUiInputs = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiInputs.vue'),
+
+// Карта name -> loader для префетча чанков по наведению/фокусу
+const nameToLoader = Object.fromEntries(
+  Object.entries(layoutLoaders).map(([path, loader]) => [
+    path.split('/').pop().replace('.vue', ''),
+    loader,
+  ]),
 )
-const LayoutUiAutocomplete = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiAutocomplete.vue'),
-)
-const LayoutUiSelects = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiSelects.vue'),
-)
-const LayoutUiSelectToggleButtons = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiSelectToggleButtons.vue'),
-)
-const LayoutUiDatePickers = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiDatePickers.vue'),
-)
-const LayoutUiCheckboxes = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiCheckboxes.vue'),
-)
-const LayoutUiRadios = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiRadios.vue'),
-)
-const LayoutUiSwitches = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiSwitches.vue'),
-)
-const LayoutUiFileUpload = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiFileUpload.vue'),
-)
-const LayoutUiPopups = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiPopups.vue'),
-)
-const LayoutUiChips = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiChips.vue'),
-)
-const LayoutUiBadges = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiBadges.vue'),
-)
-const LayoutUiTags = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiTags.vue'),
-)
-const LayoutUiBreadcrumb = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiBreadcrumb.vue'),
-)
-const LayoutUiColorPicker = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiColorPicker.vue'),
-)
-const LayoutUiTabs = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiTabs.vue'),
-)
-const LayoutUiAccordion = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiAccordion.vue'),
-)
-const LayoutUiPaginator = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiPaginator.vue'),
-)
-const LayoutUiStepper = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiStepper.vue'),
-)
-const LayoutUiCard = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiCard.vue'),
-)
-const LayoutUiCarousel = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiCarousel.vue'),
-)
-const LayoutUiTable = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiTable.vue'),
-)
-const LayoutUiTableTanstack = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiTableTanstack.vue'),
-)
-const LayoutUiProgress = defineAsyncComponent(() =>
-  import('@/layouts/ui/LayoutUiProgress.vue'),
-)
+
+// Кэш уже предзагруженных компонентов, чтобы не дёргать загрузчик повторно
+const prefetched = new Set()
+const prefetchLayout = async (name) => {
+  const loader = nameToLoader[name]
+  if (!loader || prefetched.has(name)) return
+  prefetched.add(name)
+  try {
+    await loader()
+  } catch {
+    // В случае ошибки позволим повторить попытку позже
+    prefetched.delete(name)
+  }
+}
 
 const PRIMARY_COLORS = [
   'app.color.primary',
@@ -133,76 +106,41 @@ const setSurfaceColor = (color) => {
   })
 }
 
-const updateLayoutsVisibility = ref(false)
-const isUpdatingLayouts = ref(false)
-const setLayoutsVisibility = async (value) => {
-  if (layouts.value.every((layout) => layout.selected === value)) {
-    return
-  }
-  isUpdatingLayouts.value = true
+// Динамический список имён лэйаутов из карты AsyncLayouts
+const layoutNames = computed(() => Object.keys(AsyncLayouts).sort())
 
-  const updateLayoutsSequentially = async () => {
-    const layoutsToUpdate = [...layouts.value]
-    if (!value) {
-      layoutsToUpdate.reverse()
-    }
-    for (let i = 0; i < layoutsToUpdate.length; i++) {
-      if (layoutsToUpdate[i].selected !== value) {
-        layoutsToUpdate[i].selected = value
-
-        if (i < layoutsToUpdate.length - 1) {
-          await new Promise((resolve) => setTimeout(resolve, value ? 50 : 10))
-        }
-      }
-    }
-    isUpdatingLayouts.value = false
-  }
-
-  await updateLayoutsSequentially()
+// Преобразует имя файла в удобную метку, убирает префикс LayoutUi
+const displayLabel = (name) => {
+  const base = name.replace(/^LayoutUi/, '')
+  return base.replace(/([a-z])([A-Z])/g, '$1 $2')
 }
-watch(() => updateLayoutsVisibility.value, setLayoutsVisibility)
 
-const layouts = ref([
-  { name: 'LayoutUiFonts', label: 'Fonts', selected: false },
-  { name: 'LayoutUiIcons', label: 'Icons', selected: false },
-  { name: 'LayoutUiColors', label: 'Colors', selected: false },
-  { name: 'LayoutUiButtons', label: 'Buttons', selected: true },
-  { name: 'LayoutUiInputs', label: 'Inputs', selected: false },
-  { name: 'LayoutUiAutocomplete', label: 'Autocomplete', selected: false },
-  { name: 'LayoutUiSelects', label: 'Selects', selected: false },
-  {
-    name: 'LayoutUiSelectToggleButtons',
-    label: 'Select / Toggle Buttons',
-    selected: false,
-  },
-  { name: 'LayoutUiDatePickers', label: 'DatePickers', selected: false },
-  { name: 'LayoutUiCheckboxes', label: 'Checkboxes', selected: false },
-  { name: 'LayoutUiRadios', label: 'Radios', selected: false },
-  { name: 'LayoutUiSwitches', label: 'Switches', selected: false },
-  { name: 'LayoutUiFileUpload', label: 'FileUpload', selected: false },
-  { name: 'LayoutUiPopups', label: 'Popups', selected: false },
-  { name: 'LayoutUiChips', label: 'Chips', selected: false },
-  { name: 'LayoutUiBadges', label: 'Badges', selected: false },
-  { name: 'LayoutUiTags', label: 'Tags', selected: false },
-  { name: 'LayoutUiBreadcrumb', label: 'Breadcrumb', selected: false },
-  { name: 'LayoutUiColorPicker', label: 'ColorPicker', selected: false },
-  { name: 'LayoutUiTabs', label: 'Tabs', selected: false },
-  { name: 'LayoutUiAccordion', label: 'Accordion', selected: false },
-  { name: 'LayoutUiPaginator', label: 'Paginator', selected: false },
-  { name: 'LayoutUiStepper', label: 'Stepper', selected: false },
-  { name: 'LayoutUiCard', label: 'Card', selected: false },
-  { name: 'LayoutUiCarousel', label: 'Carousel', selected: false },
-  { name: 'LayoutUiTable', label: 'Table', selected: false },
-  {
-    name: 'LayoutUiTableTanstack',
-    label: 'TableTanstack',
-    selected: false,
-  },
-  { name: 'LayoutUiProgress', label: 'Progress', selected: false },
-])
+// Набор выбранных лэйаутов
+const selected = ref(new Set())
 
-const isComponentSelected = (componentName) => {
-  return layouts.value.find((item) => item.name === componentName).selected
+// По умолчанию выбираем "Buttons", если есть, иначе первый
+onMounted(() => {
+  const preferred = 'LayoutUiButtons'
+  if (preferred in AsyncLayouts) selected.value.add(preferred)
+  else if (layoutNames.value.length) selected.value.add(layoutNames.value[0])
+})
+
+const updateLayoutsVisibility = ref(false)
+watch(updateLayoutsVisibility, (value) => {
+  if (value) selected.value = new Set(layoutNames.value)
+  else selected.value.clear()
+})
+
+const isComponentSelected = (componentName) => selected.value.has(componentName)
+
+const isSelected = (name) => selected.value.has(name)
+const toggleSelected = async (name, value) => {
+  if (value) {
+    await prefetchLayout(name)
+    selected.value.add(name)
+  } else {
+    selected.value.delete(name)
+  }
 }
 
 // Инициализация композабла анимации
@@ -212,19 +150,46 @@ const { getAnimationProps } = useAnimation()
 const getElementAnimationProps = (elementName) => {
   return getAnimationProps(elementName)
 }
+
+// Пропсы, специфичные для отдельных лэйаутов
+const getComponentProps = (name) => {
+  if (name === 'LayoutUiColors') {
+    return {
+      'primary-colors': PRIMARY_COLORS,
+      'surface-colors': SURFACE_COLORS,
+      'color-shades': COLOR_SHADES,
+      'primary-palette': primaryPalette,
+      'surface-palette': surfacePalette,
+    }
+  }
+  return {}
+}
+
+// Директивы/атрибуты для отдельных лэйаутов (например, Carousel)
+const getAnimateOnScroll = (name) => {
+  if (name === 'LayoutUiCarousel') {
+    return {
+      enterClass: 'animate-fadein',
+      leaveClass: 'animate-fadeout',
+    }
+  }
+  // Директива ожидает объект; undefined приводит к попытке чтения свойств
+  return {}
+}
 </script>
 
 <template>
   <div class="relative overflow-hidden">
     <div class="sticky top-0 left-0">
-      <div class="flex items-center justify-between flex-wrap gap-4 w-full max-w-[1200px]">
-        <span class="font-bold block w-full">Цветовая палитра:</span>
+      <div
+        class="flex w-full max-w-[1200px] flex-wrap items-center justify-between gap-4">
+        <span class="block w-full font-bold">Цветовая палитра:</span>
         <div class="flex items-center gap-2">
           <span>Primary:</span>
           <div
             v-for="color in PRIMARY_COLORS"
             :key="color"
-            class="size-8 rounded-full cursor-pointer"
+            class="size-8 cursor-pointer rounded-full"
             :style="getBackgroundColor(color)"
             @click="setPrimaryColor(color)"></div>
         </div>
@@ -233,7 +198,7 @@ const getElementAnimationProps = (elementName) => {
           <div
             v-for="color in SURFACE_COLORS"
             :key="color"
-            class="size-8 rounded-full cursor-pointer"
+            class="size-8 cursor-pointer rounded-full"
             :style="getBackgroundColor(color)"
             @click="setSurfaceColor(color)"></div>
         </div>
@@ -244,231 +209,49 @@ const getElementAnimationProps = (elementName) => {
       <h1>UI-KIT</h1>
     </Divider>
 
-    <div class="flex flex-col items-start gap-8 w-full max-w-[1200px]">
-      <div class="flex items-center flex-wrap gap-4 w-full">
+    <div class="flex w-full max-w-[1200px] flex-col items-start gap-8">
+      <div class="flex w-full flex-wrap items-center gap-4">
         <ToggleButton
           v-model="updateLayoutsVisibility"
           onLabel="Скрыть все"
-          offLabel="Показать все"
-          :disabled="isUpdatingLayouts" />
-        <div
-          class=""
-          v-for="layout in layouts"
-          :key="layout.name">
+          offLabel="Показать все" />
+        <div v-for="name in layoutNames" :key="name">
           <ToggleButton
-            v-model="layout.selected"
-            :onLabel="layout.label"
-            :offLabel="layout.label" />
+            :modelValue="isSelected(name)"
+            :onLabel="displayLabel(name)"
+            :offLabel="displayLabel(name)"
+            @update:modelValue="
+              (val) => {
+                toggleSelected(name, val)
+                if (val) prefetchLayout(name)
+              }
+            "
+            @mouseenter="prefetchLayout(name)"
+            @focusin="prefetchLayout(name)" />
         </div>
       </div>
 
       <LayoutGroup>
         <AnimatePresence mode="popLayout">
-          <motion.div
-            v-if="isComponentSelected('LayoutUiFonts')"
-            v-bind="getElementAnimationProps('LayoutUiFonts')"
-            class="ui-animated">
-            <LayoutUiFonts />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiIcons')"
-            v-bind="getElementAnimationProps('LayoutUiIcons')"
-            class="ui-animated">
-            <LayoutUiIcons />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiColors')"
-            v-bind="getElementAnimationProps('LayoutUiColors')"
-            class="ui-animated">
-            <LayoutUiColors
-              :primary-colors="PRIMARY_COLORS"
-              :surface-colors="SURFACE_COLORS"
-              :color-shades="COLOR_SHADES"
-              :primary-palette="primaryPalette"
-              :surface-palette="surfacePalette" />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiButtons')"
-            v-bind="getElementAnimationProps('LayoutUiButtons')"
-            class="ui-animated">
-            <LayoutUiButtons />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiInputs')"
-            v-bind="getElementAnimationProps('LayoutUiInputs')"
-            class="ui-animated">
-            <LayoutUiInputs />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiAutocomplete')"
-            v-bind="getElementAnimationProps('LayoutUiAutocomplete')"
-            class="ui-animated">
-            <LayoutUiAutocomplete />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiSelects')"
-            v-bind="getElementAnimationProps('LayoutUiSelects')"
-            class="ui-animated">
-            <LayoutUiSelects />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiSelectToggleButtons')"
-            v-bind="getElementAnimationProps('LayoutUiSelectToggleButtons')"
-            class="ui-animated">
-            <LayoutUiSelectToggleButtons />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiDatePickers')"
-            v-bind="getElementAnimationProps('LayoutUiDatePickers')"
-            class="ui-animated">
-            <LayoutUiDatePickers />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiCheckboxes')"
-            v-bind="getElementAnimationProps('LayoutUiCheckboxes')"
-            class="ui-animated">
-            <LayoutUiCheckboxes />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiRadios')"
-            v-bind="getElementAnimationProps('LayoutUiRadios')"
-            class="ui-animated">
-            <LayoutUiRadios />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiSwitches')"
-            v-bind="getElementAnimationProps('LayoutUiSwitches')"
-            class="ui-animated">
-            <LayoutUiSwitches />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiFileUpload')"
-            v-bind="getElementAnimationProps('LayoutUiFileUpload')"
-            class="ui-animated">
-            <LayoutUiFileUpload />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiPopups')"
-            v-bind="getElementAnimationProps('LayoutUiPopups')"
-            class="ui-animated">
-            <LayoutUiPopups />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiChips')"
-            v-bind="getElementAnimationProps('LayoutUiChips')"
-            class="ui-animated">
-            <LayoutUiChips />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiBadges')"
-            v-bind="getElementAnimationProps('LayoutUiBadges')"
-            class="ui-animated">
-            <LayoutUiBadges />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiTags')"
-            v-bind="getElementAnimationProps('LayoutUiTags')"
-            class="ui-animated">
-            <LayoutUiTags />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiBreadcrumb')"
-            v-bind="getElementAnimationProps('LayoutUiBreadcrumb')"
-            class="ui-animated">
-            <LayoutUiBreadcrumb />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiColorPicker')"
-            v-bind="getElementAnimationProps('LayoutUiColorPicker')"
-            class="ui-animated">
-            <LayoutUiColorPicker />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiTabs')"
-            v-bind="getElementAnimationProps('LayoutUiTabs')"
-            class="ui-animated">
-            <LayoutUiTabs />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiAccordion')"
-            v-bind="getElementAnimationProps('LayoutUiAccordion')"
-            class="ui-animated">
-            <LayoutUiAccordion />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiPaginator')"
-            v-bind="getElementAnimationProps('LayoutUiPaginator')"
-            class="ui-animated">
-            <LayoutUiPaginator />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiStepper')"
-            v-bind="getElementAnimationProps('LayoutUiStepper')"
-            class="ui-animated">
-            <LayoutUiStepper />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiCard')"
-            v-bind="getElementAnimationProps('LayoutUiCard')"
-            class="ui-animated">
-            <LayoutUiCard />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiCarousel')"
-            v-bind="getElementAnimationProps('LayoutUiCarousel')"
-            class="ui-animated">
-            <LayoutUiCarousel
-              v-animateonscroll="{
-                enterClass: 'animate-fadein',
-                leaveClass: 'animate-fadeout',
-              }"
-              style="transition-duration: 0.5s" />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiTable')"
-            v-bind="getElementAnimationProps('LayoutUiTable')"
-            class="ui-animated">
-            <LayoutUiTable />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiTableTanstack')"
-            v-bind="getElementAnimationProps('LayoutUiTableTanstack')"
-            class="ui-animated">
-            <LayoutUiTableTanstack />
-          </motion.div>
-
-          <motion.div
-            v-if="isComponentSelected('LayoutUiProgress')"
-            v-bind="getElementAnimationProps('LayoutUiProgress')"
-            class="ui-animated">
-            <LayoutUiProgress />
-          </motion.div>
+          <template v-for="name in layoutNames" :key="name">
+            <motion.div
+              v-if="isComponentSelected(name)"
+              :key="name"
+              v-bind="getElementAnimationProps(name)"
+              class="w-full">
+              <KeepAlive>
+                <component
+                  :is="AsyncLayouts[name]"
+                  v-bind="getComponentProps(name)"
+                  v-animateonscroll="getAnimateOnScroll(name)"
+                  :style="
+                    name === 'LayoutUiCarousel'
+                      ? { transitionDuration: '0.5s' }
+                      : undefined
+                  " />
+              </KeepAlive>
+            </motion.div>
+          </template>
         </AnimatePresence>
       </LayoutGroup>
 
@@ -480,20 +263,3 @@ const getElementAnimationProps = (elementName) => {
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.ui-animated { @apply w-[inherit] overflow-hidden; }
-
-:deep(.content) {
-  & > * {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-}
-</style>

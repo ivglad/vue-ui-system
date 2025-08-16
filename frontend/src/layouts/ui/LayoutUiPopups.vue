@@ -331,9 +331,9 @@ const popupVariants = [
       <Button type="button" label="Выбрать" @click="togglePopover" />
       <Popover ref="popover" class="app-popover">
         <div
-          class="p-2 cursor-pointer hover:bg-[var(--surface-100)]"
           v-for="element in popoverElements"
           :key="element.name"
+          class="p-2 cursor-pointer hover:bg-[var(--surface-100)]"
           @click="selectPopoverElement(element)">
           <span>{{ element.name }}</span>
         </div>

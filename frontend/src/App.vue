@@ -55,12 +55,10 @@ router.beforeEach((to, from) => {
     </template>
   </Toast>
 
-  <main class="flex flex-col flex-[1_1_100%] w-full h-full relative overflow-hidden">
+  <main class="relative flex h-full w-full flex-1 flex-col overflow-hidden">
     <router-view v-slot="{ Component, route }">
       <AnimatePresence mode="wait">
-        <motion.div
-          :key="route.path"
-          class="w-full h-full overflow-hidden">
+        <motion.div :key="route.path" class="h-full w-full overflow-hidden">
           <component :is="Component" />
         </motion.div>
       </AnimatePresence>

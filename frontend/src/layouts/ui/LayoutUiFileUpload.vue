@@ -90,16 +90,16 @@ const fileUploadVariants = ['Default']
           </Message>
           <div v-if="files?.length" class="app-fileupload-files">
             <div
-              class="app-fileupload-file"
               v-for="(file, index) of files"
-              :key="file.name + file.type + file.size">
+              :key="file.name + file.type + file.size"
+              class="app-fileupload-file">
               <div class="app-fileupload-file-info">
                 <span
-                  class="app-fileupload-file-name"
                   v-tooltip.top="{
                     value: file.name,
                     showDelay: 500,
-                  }">
+                  }"
+                  class="app-fileupload-file-name">
                   {{ file.name }}
                 </span>
                 <Message severity="secondary" variant="simple" size="small">
@@ -119,16 +119,16 @@ const fileUploadVariants = ['Default']
           </div>
           <div v-if="uploadedFiles?.length">
             <div
-              class="app-fileupload-file"
               v-for="(file, index) of uploadedFiles"
-              :key="file.name + file.type + file.size">
+              :key="file.name + file.type + file.size"
+              class="app-fileupload-file">
               <div class="app-fileupload-file-info">
                 <span
-                  class="app-fileupload-file-name"
                   v-tooltip.top="{
                     value: file.name,
                     showDelay: 500,
-                  }">
+                  }"
+                  class="app-fileupload-file-name">
                   {{ file.name }}
                 </span>
                 <Message severity="secondary" variant="simple" size="small">

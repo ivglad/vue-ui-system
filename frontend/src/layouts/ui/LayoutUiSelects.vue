@@ -306,9 +306,9 @@ const selectVariants = [
     <!-- Multiselect Extended -->
     <template #multiselect-extended-default>
       <MultiSelect
+        v-model="selectedGroupedCities"
         class="app-multiselect-extended"
         overlayClass="app-multiselect-extended-overlay"
-        v-model="selectedGroupedCities"
         :options="groupedCities"
         optionLabel="label"
         optionGroupLabel="label"

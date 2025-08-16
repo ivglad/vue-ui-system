@@ -17,11 +17,11 @@ const dynamicIcons = {
   <LayoutUiTemplate title="Icons">
     <div class="content">
       <div class="icons">
-        <div class="row">
+        <div class="flex items-center gap-1">
           <i-custom-favicon />
           <i-custom-logo />
         </div>
-        <div class="row">
+        <div class="flex items-center gap-1">
           <i-custom-close />
           <i-custom-message-send />
           <i-custom-settings />
@@ -35,13 +35,13 @@ const dynamicIcons = {
           <i-custom-arrow-down />
           <i-custom-dot-loader />
         </div>
-        <div class="row">
+        <div class="flex items-center gap-1">
           <span>Динамический импорт:</span>
           <div v-for="icon in dynamicIcons" :key="icon.title">
             <component :is="icon.component" />
           </div>
         </div>
-        <div class="row">
+        <div class="flex items-center gap-1">
           <!-- Импорт предзагруженных иконок из библиотеки https://icon-sets.iconify.design/ -->
           <!-- <span>Внешняя библиотека:</span> -->
           <!-- <i-fluent-home-16-regular /> -->

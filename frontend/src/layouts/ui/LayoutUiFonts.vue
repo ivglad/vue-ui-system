@@ -4,14 +4,14 @@
   <LayoutUiTemplate title="Fonts">
     <div class="content">
       <div>
-        <div class="row">
+        <div class="flex items-center gap-1">
           <span>Inter</span>
           <span>Regular</span>
           <span class="font-semibold">Semibold</span>
           <span class="font-bold">Bold</span>
         </div>
         <span>Fluid text:</span>
-        <div class="row">
+        <div class="flex items-center gap-1">
           <div class="mr-10 ui-typo-col">
             <span class="font-bold ui-h1">H1:</span>
             <span class="font-bold ui-h2">H2:</span>

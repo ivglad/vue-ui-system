@@ -126,10 +126,10 @@ defineOptions({
                 fluid
                 class="rounded-xl text-base" />
               <Message
+                v-if="$field?.invalid && $field.error?.message"
                 class="app-input-message"
                 :severity="$field?.invalid ? 'error' : 'contrast'"
-                variant="simple"
-                v-if="$field?.invalid && $field.error?.message">
+                variant="simple">
                 {{ $field.error?.message }}
               </Message>
               <label for="auth-form-email">Email</label>
@@ -142,20 +142,20 @@ defineOptions({
             <FloatLabel class="app-input">
               <Password
                 id="auth-form-password"
-                type="text"
                 v-tooltip.top="{
                   value: $field.error?.message,
                   showDelay: 500,
                 }"
+                type="text"
                 :feedback="false"
                 toggleMask
                 fluid
                 class="rounded-xl text-base" />
               <Message
+                v-if="$field?.invalid && $field.error?.message"
                 class="app-input-message"
                 :severity="$field?.invalid ? 'error' : 'contrast'"
-                variant="simple"
-                v-if="$field?.invalid && $field.error?.message">
+                variant="simple">
                 {{ $field.error?.message }}
               </Message>
               <label for="auth-form-password">Пароль</label>
