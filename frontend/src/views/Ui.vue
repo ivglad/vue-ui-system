@@ -215,25 +215,25 @@ const getElementAnimationProps = (elementName) => {
 </script>
 
 <template>
-  <div class="ui relative flex flex-col items-center gap-8 w-full h-full overflow-hidden pt-32 px-16 pb-24 md:pt-36 md:px-8 md:pb-16">
-    <div class="ui-header fixed top-0 left-0 flex items-center justify-center w-screen h-32 px-16 py-4 bg-(--surface-50) z-[1000] lg:h-36 md:px-8">
-      <div class="ui-header__palette flex items-center justify-between flex-wrap gap-4 w-full max-w-[1200px]">
-        <span class="ui-header__palette-title font-bold block w-full">Цветовая палитра:</span>
-        <div class="ui-header__primary flex items-center gap-2">
+  <div class="relative overflow-hidden">
+    <div class="sticky top-0 left-0">
+      <div class="flex items-center justify-between flex-wrap gap-4 w-full max-w-[1200px]">
+        <span class="font-bold block w-full">Цветовая палитра:</span>
+        <div class="flex items-center gap-2">
           <span>Primary:</span>
           <div
             v-for="color in PRIMARY_COLORS"
             :key="color"
-            class="ui-header__surface-color size-8 rounded-full cursor-pointer"
+            class="size-8 rounded-full cursor-pointer"
             :style="getBackgroundColor(color)"
             @click="setPrimaryColor(color)"></div>
         </div>
-        <div class="ui-header__surface flex items-center gap-2">
+        <div class="flex items-center gap-2">
           <span>Surface:</span>
           <div
             v-for="color in SURFACE_COLORS"
             :key="color"
-            class="ui-header__surface-color size-8 rounded-full cursor-pointer"
+            class="size-8 rounded-full cursor-pointer"
             :style="getBackgroundColor(color)"
             @click="setSurfaceColor(color)"></div>
         </div>
@@ -244,15 +244,15 @@ const getElementAnimationProps = (elementName) => {
       <h1>UI-KIT</h1>
     </Divider>
 
-    <div class="ui-layouts flex flex-col items-start gap-8 w-full max-w-[1200px]">
-      <div class="ui-layouts-toggle flex items-center flex-wrap gap-4 w-full">
+    <div class="flex flex-col items-start gap-8 w-full max-w-[1200px]">
+      <div class="flex items-center flex-wrap gap-4 w-full">
         <ToggleButton
           v-model="updateLayoutsVisibility"
           onLabel="Скрыть все"
           offLabel="Показать все"
           :disabled="isUpdatingLayouts" />
         <div
-          class="ui-layout-toggle"
+          class=""
           v-for="layout in layouts"
           :key="layout.name">
           <ToggleButton

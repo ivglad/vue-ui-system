@@ -45,7 +45,7 @@
 </template>
 
 <style scoped>
-@reference "@/assets/styles/main.css";
+@reference "@/assets/styles/tailwind.css";
 
 .ui-typo-col { @apply flex flex-col gap-4; }
 .ui-h1 { @apply text-[clamp(20px,4vw,40px)]; }

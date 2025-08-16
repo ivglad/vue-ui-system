@@ -55,7 +55,7 @@ router.beforeEach((to, from) => {
     </template>
   </Toast>
 
-  <main>
+  <main class="flex flex-col flex-[1_1_100%] w-full h-full relative overflow-hidden">
     <router-view v-slot="{ Component, route }">
       <AnimatePresence mode="wait">
         <motion.div

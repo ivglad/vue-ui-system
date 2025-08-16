@@ -1,0 +1,56 @@
+/*
+ * Дополнительные стили для Primevue
+ */
+@layer primevue {
+  // Disabled styles
+  .p-disabled,
+  .p-component[disabled] {
+    &::placeholder {
+      color: var(--p-app-disabled-color);
+    }
+    opacity: var(--p-disabled-opacity);
+    filter: grayscale(calc(var(--p-disabled-opacity) + 0.1));
+    user-select: none;
+    pointer-events: none;
+    &.p-button {
+      opacity: var(--p-disabled-opacity);
+      filter: grayscale(calc(var(--p-disabled-opacity) + 0.1));
+    }
+
+    &:not(:has(.p-disabled)):not(:has(.p-component[disabled])) {
+      opacity: var(--p-disabled-opacity);
+      filter: grayscale(calc(var(--p-disabled-opacity) + 0.1));
+      &.p-button {
+        opacity: var(--p-disabled-opacity);
+        filter: grayscale(calc(var(--p-disabled-opacity) + 0.1));
+      }
+    }
+
+    &:has(.p-disabled),
+    &:has(.p-component[disabled]) {
+      opacity: 1;
+      filter: none;
+    }
+
+    > * {
+      opacity: 1;
+      filter: none;
+    }
+
+    &:not(.p-button) .icon,
+    &:not(.p-button) .p-icon,
+    + .icon,
+    + .p-icon {
+      opacity: var(--p-disabled-opacity);
+      filter: grayscale(calc(var(--p-disabled-opacity) + 0.1));
+      cursor: default;
+      user-select: none;
+      pointer-events: none;
+    }
+    + label {
+      color: var(--p-app-disabled-color);
+      opacity: var(--p-disabled-opacity);
+      filter: grayscale(calc(var(--p-disabled-opacity) + 0.1));
+    }
+  }
+}

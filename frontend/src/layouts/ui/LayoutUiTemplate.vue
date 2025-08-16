@@ -42,7 +42,7 @@ const getSlotName = (variant, state) => {
 </script>
 
 <template>
-  <section class="ui-layout-display flex flex-col items-start w-full overflow-hidden rounded-[var(--radius-control-lg)] border border-[var(--surface-200)]">
+  <section class="ui-layout-display flex flex-col items-start w-full overflow-hidden rounded-[var(--radius-control-lg)]">
     <div class="ui-layout-display__header flex items-center justify-start w-full px-8 py-4 bg-[var(--surface-100)]">
       <h2 class="font-semibold text-xl md:text-2xl">{{ title }}</h2>
     </div>
@@ -53,18 +53,18 @@ const getSlotName = (variant, state) => {
       <div class="grid-table-wrapper flex flex-col w-full overflow-x-auto" v-else>
         <!-- Заголовок таблицы -->
         <div class="grid-table-header hidden md:grid w-full gap-8" :style="{ gridTemplateColumns }">
-          <div class="grid-cell header-cell first-cell font-semibold min-h-[50px] text-start whitespace-pre-line">Variant</div>
+          <div class="grid-cell header-cell first-cell font-semibold min-h-[50px] text-start">Variant</div>
           <div
             v-for="state in states"
             :key="state"
-            class="grid-cell header-cell font-semibold min-h-[50px] whitespace-pre-line">
+            class="grid-cell header-cell font-semibold min-h-[50px]">
             {{ state }}
           </div>
         </div>
 
         <!-- Дополнительные варианты -->
         <div v-for="variant in variants" :key="variant" class="grid-table-row grid w-full gap-8" :style="{ gridTemplateColumns }">
-          <div class="grid-cell first-cell text-start mb-4 md:font-semibold md:py-2 md:px-1 whitespace-pre-line">{{ variant }}</div>
+          <div class="grid-cell first-cell text-start mb-4 md:font-semibold md:py-2 md:px-1">{{ variant }}</div>
           <div v-for="state in states" :key="state" class="grid-cell w-full">
             <div
               class="grid-cell-slot w-full mb-8"

@@ -19,6 +19,7 @@
     "@primevue/forms": "^4.3.7",
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/vue-query": "^5.83.1",
+    "@tanstack/vue-table": "^8.21.3",
     "@vueuse/core": "^13.6.0",
     "axios": "^1.11.0",
     "dotenv": "^17.2.1",

@@ -76,7 +76,6 @@ export default defineConfig({
       ],
       packagePresets: [
         'primevue',
-        '@primeuix/themes',
         '@primevue/core/api',
         '@primevue/forms/resolvers/zod',
         '@tanstack/vue-query',
@@ -119,14 +118,6 @@ export default defineConfig({
         ]
       : []),
   ],
-  css: {
-    preprocessorOptions: {
-      scss: {
-        api: 'modern-compiler',
-        additionalData: `@use '@/assets/styles/index' as *;`,
-      },
-    },
-  },
   resolve: {
     alias: [
       {
