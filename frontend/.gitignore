@@ -6,3 +6,6 @@
 /dist
 /auto-imports.d.ts
 /components.d.ts
+# Автоген PrimeVue PT типов
+/src/design/pt/primevue-pt.schema.d.ts
+/src/design/pt/.cache

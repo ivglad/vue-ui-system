@@ -1,16 +1,7 @@
 <script setup>
-import { motion } from 'motion-v'
-
 const userStore = useUserStore()
 const router = useRouter()
 const toast = useToast()
-
-// Композабл для поочередной анимации элементов
-const { getElementAnimationProps } = usePageTransition({
-  staggerDelay: 0.1,
-  enterDuration: 0.3,
-  enterDelay: 0.2,
-})
 
 // Композабл для обработки ошибок
 const { handleAuthError, clearError } = useAuthErrorHandler()
@@ -94,22 +85,30 @@ defineOptions({
 
 <template>
   <div
-    class="flex flex-col items-center justify-center self-center flex-1 h-screen gap-5 w-full">
-    <motion.h1
-      v-bind="getElementAnimationProps(0)"
-      class="text-2xl mb-6 font-semibold">
-      Авторизация
-    </motion.h1>
+    class="flex h-screen w-full flex-1 flex-col items-center justify-center gap-5 self-center">
+    <AnimatedContainer
+      tag="h1"
+      :index="0"
+      preset="fadeIn"
+      class="mb-6 text-2xl font-semibold"
+      >Авторизация</AnimatedContainer
+    >
 
-    <motion.div
-      v-bind="getElementAnimationProps(1)"
-      class="w-full flex justify-center max-w-[350px]">
+    <AnimatedContainer
+      tag="div"
+      :index="1"
+      preset="fadeIn"
+      class="flex w-full max-w-[350px] justify-center">
       <Form
-        class="flex flex-col items-center w-full max-w-md"
+        class="flex w-full max-w-md flex-col items-center"
         :initialValues
         :resolver="loginResolver"
         @submit="loginSubmit">
-        <motion.div v-bind="getElementAnimationProps(2)" class="mb-8 w-full">
+        <AnimatedContainer
+          tag="div"
+          :index="2"
+          preset="fadeIn"
+          class="mb-8 w-full">
           <FormField
             v-slot="$field"
             :validateOnValueUpdate="false"
@@ -135,9 +134,13 @@ defineOptions({
               <label for="auth-form-email">Email</label>
             </FloatLabel>
           </FormField>
-        </motion.div>
+        </AnimatedContainer>
 
-        <motion.div v-bind="getElementAnimationProps(3)" class="mb-6 w-full">
+        <AnimatedContainer
+          tag="div"
+          :index="3"
+          preset="fadeIn"
+          class="mb-6 w-full">
           <FormField v-slot="$field" validateOnValueUpdate name="password">
             <FloatLabel class="app-input">
               <Password
@@ -161,17 +164,17 @@ defineOptions({
               <label for="auth-form-password">Пароль</label>
             </FloatLabel>
           </FormField>
-        </motion.div>
+        </AnimatedContainer>
 
-        <motion.div v-bind="getElementAnimationProps(4)">
+        <AnimatedContainer tag="div" :index="4" preset="fadeIn">
           <Button
-            class="w-fit h-[3.25rem] p-4 rounded-xl text-base"
+            class="h-[3.25rem] w-fit rounded-xl p-4 text-base"
             type="submit"
             label="Войти в систему"
             :disabled="loginUserIsPending">
           </Button>
-        </motion.div>
+        </AnimatedContainer>
       </Form>
-    </motion.div>
+    </AnimatedContainer>
   </div>
 </template>

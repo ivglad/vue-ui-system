@@ -1,6 +1,4 @@
 <script setup>
-import { AnimatePresence, motion } from 'motion-v'
-
 // Инициализируем viewport fallback только для старых браузеров
 const { initViewportFallback, cleanupViewportFallback } = useViewportFallback()
 
@@ -55,12 +53,12 @@ router.beforeEach((to, from) => {
     </template>
   </Toast>
 
-  <main class="relative flex h-full w-full flex-1 flex-col overflow-hidden">
+  <main class="relative flex h-full w-full flex-col overflow-x-hidden">
     <router-view v-slot="{ Component, route }">
       <AnimatePresence mode="wait">
-        <motion.div :key="route.path" class="h-full w-full overflow-hidden">
+        <AnimatedContainer :key="route.path" preset="fadeIn">
           <component :is="Component" />
-        </motion.div>
+        </AnimatedContainer>
       </AnimatePresence>
     </router-view>
   </main>

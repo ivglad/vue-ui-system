@@ -1,14 +1,7 @@
 <script setup>
-import { motion } from 'motion-v'
-
 const router = useRouter()
 
-// Композабл для поочередной анимации элементов
-const { getElementAnimationProps } = usePageTransition({
-  staggerDelay: 0.15,
-  enterDuration: 0.4,
-  enterDelay: 0.2,
-})
+// Стаггер задержек инкапсулирован в AnimatedContainer через prop index
 
 const goHome = () => {
   router.push('/')
@@ -29,55 +22,71 @@ defineOptions({
 
 <template>
   <div
-    class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4">
-    <motion.div
-      v-bind="getElementAnimationProps(0)"
-      class="text-center max-w-md w-full">
-      <motion.div
-        v-bind="getElementAnimationProps(1)"
-        class="text-8xl md:text-9xl font-black text-primary-500 mb-4 select-none">
+    class="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4">
+    <AnimatedContainer
+      tag="div"
+      :index="0"
+      preset="fadeIn"
+      class="w-full max-w-md text-center">
+      <AnimatedContainer
+        tag="div"
+        :index="1"
+        preset="fadeIn"
+        class="text-primary-500 mb-4 text-8xl font-black select-none md:text-9xl">
         404
-      </motion.div>
+      </AnimatedContainer>
 
-      <motion.h1
-        v-bind="getElementAnimationProps(2)"
-        class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+      <AnimatedContainer
+        tag="h1"
+        :index="2"
+        preset="fadeIn"
+        class="mb-4 text-2xl font-bold text-gray-900 md:text-3xl">
         Упс! Страница не найдена
-      </motion.h1>
+      </AnimatedContainer>
 
-      <motion.p
-        v-bind="getElementAnimationProps(3)"
-        class="text-gray-600 text-lg leading-relaxed mb-8">
+      <AnimatedContainer
+        tag="p"
+        :index="3"
+        preset="fadeIn"
+        class="mb-8 text-lg leading-relaxed text-gray-600">
         Страница, которую вы ищете, была удалена, переименована или временно
         недоступна.
-      </motion.p>
+      </AnimatedContainer>
 
-      <motion.div
-        v-bind="getElementAnimationProps(4)"
-        class="flex flex-col sm:flex-row gap-4 justify-center">
+      <AnimatedContainer
+        tag="div"
+        :index="4"
+        preset="fadeIn"
+        class="flex flex-col justify-center gap-4 sm:flex-row">
         <Button
           label="На главную"
           icon="pi pi-home"
-          class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-xl font-medium transition-colors duration-200"
+          class="bg-primary-500 hover:bg-primary-600 rounded-xl px-6 py-3 font-medium text-white transition-colors duration-200"
           @click="goHome" />
 
         <Button
           label="Назад"
           icon="pi pi-arrow-left"
           outlined
-          class="border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-3 rounded-xl font-medium transition-colors duration-200"
+          class="rounded-xl border-gray-300 px-6 py-3 font-medium text-gray-700 transition-colors duration-200 hover:bg-gray-50"
           @click="goBack" />
-      </motion.div>
-    </motion.div>
+      </AnimatedContainer>
+    </AnimatedContainer>
 
-    <motion.div
-      v-bind="getElementAnimationProps(5)"
-      class="absolute top-10 left-10 w-20 h-20 bg-primary-100 rounded-full opacity-50 blur-xl" />
-    <motion.div
-      v-bind="getElementAnimationProps(6)"
-      class="absolute bottom-10 right-10 w-32 h-32 bg-gray-200 rounded-full opacity-30 blur-2xl" />
-    <motion.div
-      v-bind="getElementAnimationProps(7)"
-      class="absolute top-1/2 left-1/4 w-16 h-16 bg-primary-200 rounded-full opacity-40 blur-lg" />
+    <AnimatedContainer
+      tag="div"
+      :index="5"
+      preset="fadeIn"
+      class="bg-primary-100 absolute top-10 left-10 h-20 w-20 rounded-full opacity-50 blur-xl" />
+    <AnimatedContainer
+      tag="div"
+      :index="6"
+      preset="fadeIn"
+      class="absolute right-10 bottom-10 h-32 w-32 rounded-full bg-gray-200 opacity-30 blur-2xl" />
+    <AnimatedContainer
+      tag="div"
+      :index="7"
+      preset="fadeIn"
+      class="bg-primary-200 absolute top-1/2 left-1/4 h-16 w-16 rounded-full opacity-40 blur-lg" />
   </div>
 </template>

@@ -7,5 +7,7 @@
   "arrowParens": "always",
   "vueIndentScriptAndStyle": false,
   "singleAttributePerLine": false,
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindFunctions": ["clsx", "classnames", "cn", "cva"],
+  "tailwindAttributes": ["class", "className"]
 }

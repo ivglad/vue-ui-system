@@ -125,6 +125,14 @@ export default [
       ],
     },
   },
+  // Папка дизайна: отключаем предупреждения no-unused-vars, т.к. файлы содержат декларативные PT-каркасы
+  {
+    files: ["src/design/**/*.{js,ts,vue}"],
+    rules: {
+      "no-unused-vars": "off",
+      "vue/no-unused-vars": "off",
+    },
+  },
   // Специально для файла конфигурации, чтобы не падать на служебных конструкциях
   {
     files: ["eslint.config.js"],

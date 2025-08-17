@@ -1,25 +1,21 @@
 <script setup>
-import { $dt } from '@primeuix/themes'
-import { AnimatePresence, motion, LayoutGroup } from 'motion-v'
+// Динамическая карта асинхронных секций из директории `@/uikit/sections/`
+const sectionEntries = Object.entries(
+  import.meta.glob('@/uikit/sections/*.vue', {
+    eager: false,
+  }),
+)
 
-// Динамическая карта асинхронных лэйаутов из директории `src/layouts/ui/`
-// Исключаем статические импорты: нет прямых тегов компонентов в шаблоне
-// Используем абсолютный путь, чтобы исключить влияние алиаса в dev-графе
-const layoutLoaders = import.meta.glob('/src/layouts/ui/*.vue', {
-  eager: false,
-})
-
-const AsyncLayouts = Object.fromEntries(
-  Object.entries(layoutLoaders).map(([path, loader]) => {
+// Асинхронные компоненты секций
+const AsyncSections = Object.fromEntries(
+  sectionEntries.map(([path, loader]) => {
     const name = path.split('/').pop().replace('.vue', '')
     return [
       name,
       defineAsyncComponent({
         loader,
-        // Отключаем Suspense-поведение для первого показа
         suspensible: false,
         delay: 150,
-        // Автоматический ретрай при временных ошибках загрузки чанка
         onError(err, retry, fail, attempts) {
           if (attempts <= 3) retry()
           else fail()
@@ -29,27 +25,33 @@ const AsyncLayouts = Object.fromEntries(
   }),
 )
 
-// Карта name -> loader для префетча чанков по наведению/фокусу
+// Карта name -> loader для префетча чанков
 const nameToLoader = Object.fromEntries(
-  Object.entries(layoutLoaders).map(([path, loader]) => [
+  sectionEntries.map(([path, loader]) => [
     path.split('/').pop().replace('.vue', ''),
     loader,
   ]),
 )
 
-// Кэш уже предзагруженных компонентов, чтобы не дёргать загрузчик повторно
-const prefetched = new Set()
-const prefetchLayout = async (name) => {
-  const loader = nameToLoader[name]
-  if (!loader || prefetched.has(name)) return
-  prefetched.add(name)
-  try {
-    await loader()
-  } catch {
-    // В случае ошибки позволим повторить попытку позже
-    prefetched.delete(name)
-  }
-}
+// Управление выбором секций (минимум одна)
+const {
+  sectionNames,
+  includeList,
+  isSelected,
+  toggle,
+  toggleAll,
+  prefetch,
+  selectDefault,
+} = useUiShowcase(nameToLoader)
+
+onMounted(() => {
+  selectDefault()
+})
+
+// Видимые секции (для корректного стаггера по индексу только видимых элементов)
+const visibleSectionNames = computed(() =>
+  sectionNames.value.filter(isSelected),
+)
 
 const PRIMARY_COLORS = [
   'app.color.primary',
@@ -106,54 +108,13 @@ const setSurfaceColor = (color) => {
   })
 }
 
-// Динамический список имён лэйаутов из карты AsyncLayouts
-const layoutNames = computed(() => Object.keys(AsyncLayouts).sort())
+// Преобразует имя файла в удобную метку, убирает префикс UiSection
+const displayLabel = (name) =>
+  name.replace(/^UiSection/, '').replace(/([a-z])([A-Z])/g, '$1 $2')
 
-// Преобразует имя файла в удобную метку, убирает префикс LayoutUi
-const displayLabel = (name) => {
-  const base = name.replace(/^LayoutUi/, '')
-  return base.replace(/([a-z])([A-Z])/g, '$1 $2')
-}
-
-// Набор выбранных лэйаутов
-const selected = ref(new Set())
-
-// По умолчанию выбираем "Buttons", если есть, иначе первый
-onMounted(() => {
-  const preferred = 'LayoutUiButtons'
-  if (preferred in AsyncLayouts) selected.value.add(preferred)
-  else if (layoutNames.value.length) selected.value.add(layoutNames.value[0])
-})
-
-const updateLayoutsVisibility = ref(false)
-watch(updateLayoutsVisibility, (value) => {
-  if (value) selected.value = new Set(layoutNames.value)
-  else selected.value.clear()
-})
-
-const isComponentSelected = (componentName) => selected.value.has(componentName)
-
-const isSelected = (name) => selected.value.has(name)
-const toggleSelected = async (name, value) => {
-  if (value) {
-    await prefetchLayout(name)
-    selected.value.add(name)
-  } else {
-    selected.value.delete(name)
-  }
-}
-
-// Инициализация композабла анимации
-const { getAnimationProps } = useAnimation()
-
-// Функция для получения пропсов анимации для конкретного компонента
-const getElementAnimationProps = (elementName) => {
-  return getAnimationProps(elementName)
-}
-
-// Пропсы, специфичные для отдельных лэйаутов
+// Пропсы, специфичные для отдельных секций
 const getComponentProps = (name) => {
-  if (name === 'LayoutUiColors') {
+  if (name === 'UiSectionColors') {
     return {
       'primary-colors': PRIMARY_COLORS,
       'surface-colors': SURFACE_COLORS,
@@ -165,9 +126,9 @@ const getComponentProps = (name) => {
   return {}
 }
 
-// Директивы/атрибуты для отдельных лэйаутов (например, Carousel)
+// Директивы/атрибуты для отдельных секций (например, Carousel)
 const getAnimateOnScroll = (name) => {
-  if (name === 'LayoutUiCarousel') {
+  if (name === 'UiSectionCarousel') {
     return {
       enterClass: 'animate-fadein',
       leaveClass: 'animate-fadeout',
@@ -179,11 +140,10 @@ const getAnimateOnScroll = (name) => {
 </script>
 
 <template>
-  <div class="relative overflow-hidden">
-    <div class="sticky top-0 left-0">
+  <div class="relative">
+    <div class="sticky top-0 z-100 p-4 backdrop-blur-md">
       <div
-        class="flex w-full max-w-[1200px] flex-wrap items-center justify-between gap-4">
-        <span class="block w-full font-bold">Цветовая палитра:</span>
+        class="mx-auto flex w-full max-w-[1200px] flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-2">
           <span>Primary:</span>
           <div
@@ -205,61 +165,40 @@ const getAnimateOnScroll = (name) => {
       </div>
     </div>
 
-    <Divider align="center">
-      <h1>UI-KIT</h1>
-    </Divider>
+    <div class="flex w-full max-w-[1200px] items-start gap-8">
+      <UiShowcaseSidebar
+        :names="sectionNames"
+        :selected="includeList"
+        :labelFor="displayLabel"
+        @toggle="toggle"
+        @prefetch="prefetch"
+        @update:showAll="toggleAll" />
 
-    <div class="flex w-full max-w-[1200px] flex-col items-start gap-8">
-      <div class="flex w-full flex-wrap items-center gap-4">
-        <ToggleButton
-          v-model="updateLayoutsVisibility"
-          onLabel="Скрыть все"
-          offLabel="Показать все" />
-        <div v-for="name in layoutNames" :key="name">
-          <ToggleButton
-            :modelValue="isSelected(name)"
-            :onLabel="displayLabel(name)"
-            :offLabel="displayLabel(name)"
-            @update:modelValue="
-              (val) => {
-                toggleSelected(name, val)
-                if (val) prefetchLayout(name)
-              }
-            "
-            @mouseenter="prefetchLayout(name)"
-            @focusin="prefetchLayout(name)" />
-        </div>
-      </div>
-
-      <LayoutGroup>
-        <AnimatePresence mode="popLayout">
-          <template v-for="name in layoutNames" :key="name">
-            <motion.div
-              v-if="isComponentSelected(name)"
+      <div class="flex min-w-0 flex-1 flex-col items-start gap-8">
+        <LayoutGroup>
+          <AnimatePresence mode="popLayout">
+            <AnimatedContainer
+              v-for="(name, idx) in visibleSectionNames"
               :key="name"
-              v-bind="getElementAnimationProps(name)"
-              class="w-full">
-              <KeepAlive>
+              preset="fadeIn"
+              :index="idx"
+              class="w-full overflow-x-hidden">
+              <KeepAlive :include="includeList">
                 <component
-                  :is="AsyncLayouts[name]"
+                  :is="AsyncSections[name]"
                   v-bind="getComponentProps(name)"
-                  v-animateonscroll="getAnimateOnScroll(name)"
-                  :style="
-                    name === 'LayoutUiCarousel'
-                      ? { transitionDuration: '0.5s' }
-                      : undefined
-                  " />
+                  v-animateonscroll="getAnimateOnScroll(name)" />
               </KeepAlive>
-            </motion.div>
-          </template>
-        </AnimatePresence>
-      </LayoutGroup>
-
-      <ScrollTop>
-        <template #icon>
-          <!-- <i-fluent-arrow-curve-up-right-20-filled /> -->
-        </template>
-      </ScrollTop>
+            </AnimatedContainer>
+          </AnimatePresence>
+        </LayoutGroup>
+      </div>
     </div>
+
+    <ScrollTop>
+      <template #icon>
+        <!-- <i-fluent-arrow-curve-up-right-20-filled /> -->
+      </template>
+    </ScrollTop>
   </div>
 </template>

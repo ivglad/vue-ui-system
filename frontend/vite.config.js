@@ -11,6 +11,7 @@ import IconsResolver from 'unplugin-icons/resolver'
 import { PrimeVueResolver } from '@primevue/auto-import-resolver'
 import MotionResolver from 'motion-v/resolver'
 import { VitePWA } from 'vite-plugin-pwa'
+import primevuePassThroughTypesPlugin from './src/design/pt/plugin/vite-primevue-passthrough-types-plugin.js'
 
 // Загрузка переменных окружения для активации PWA
 const enablePWA = process.env.VITE_ENABLE_PWA === 'true'
@@ -21,7 +22,12 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
   },
+  optimizeDeps: {
+    exclude: ['primevue'],
+  },
   plugins: [
+    // Генерация типов PT для PrimeVue (интеллисенс в design/pt)
+    primevuePassThroughTypesPlugin({ debounceMs: 5000 }),
     Vue(),
     tailwindcss(),
     Icons({
@@ -47,18 +53,25 @@ export default defineConfig({
     AutoImport({
       include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
       dirs: [
+        'src/animation/**',
         'src/composables/**',
+        'src/design/**',
         'src/helpers/**',
         'src/stores/**',
+        'src/uikit/**',
         'src/utils/**',
       ],
       imports: [
         'vue',
         'vue-router',
         {
-          '@vueuse/core': [
-            'onClickOutside',
-            'useDebounceFn',
+          '@vueuse/core': ['onClickOutside', 'useDebounceFn', 'useClipboard'],
+          '@primeuix/themes': [
+            '$dt',
+            'usePreset',
+            'updatePreset',
+            'updatePrimaryPalette',
+            'updateSurfacePalette',
           ],
           axios: [['default', 'axios']],
         },

@@ -16,7 +16,8 @@
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "generate-pwa-assets": "pwa-assets-generator"
+    "generate-pwa-assets": "pwa-assets-generator",
+    "pt:types": "node ./src/design/pt/tools/primevue-pt-types-generator.mjs"
   },
   "dependencies": {
     "@primeuix/themes": "^1.2.3",
