@@ -86,16 +86,15 @@ defineOptions({
 <template>
   <div
     class="flex h-screen w-full flex-1 flex-col items-center justify-center gap-5 self-center">
-    <AnimatedContainer
+    <MotionContainer
       tag="h1"
       :index="0"
       preset="fadeIn"
       class="mb-6 text-2xl font-semibold"
-      >Авторизация</AnimatedContainer
+      >Авторизация</MotionContainer
     >
 
-    <AnimatedContainer
-      tag="div"
+    <MotionContainer
       :index="1"
       preset="fadeIn"
       class="flex w-full max-w-[350px] justify-center">
@@ -104,11 +103,7 @@ defineOptions({
         :initialValues
         :resolver="loginResolver"
         @submit="loginSubmit">
-        <AnimatedContainer
-          tag="div"
-          :index="2"
-          preset="fadeIn"
-          class="mb-8 w-full">
+        <MotionContainer :index="2" preset="fadeIn" class="mb-8 w-full">
           <FormField
             v-slot="$field"
             :validateOnValueUpdate="false"
@@ -134,13 +129,9 @@ defineOptions({
               <label for="auth-form-email">Email</label>
             </FloatLabel>
           </FormField>
-        </AnimatedContainer>
+        </MotionContainer>
 
-        <AnimatedContainer
-          tag="div"
-          :index="3"
-          preset="fadeIn"
-          class="mb-6 w-full">
+        <MotionContainer :index="3" preset="fadeIn" class="mb-6 w-full">
           <FormField v-slot="$field" validateOnValueUpdate name="password">
             <FloatLabel class="app-input">
               <Password
@@ -164,17 +155,17 @@ defineOptions({
               <label for="auth-form-password">Пароль</label>
             </FloatLabel>
           </FormField>
-        </AnimatedContainer>
+        </MotionContainer>
 
-        <AnimatedContainer tag="div" :index="4" preset="fadeIn">
+        <MotionContainer :index="4" preset="fadeIn">
           <Button
             class="h-[3.25rem] w-fit rounded-xl p-4 text-base"
             type="submit"
             label="Войти в систему"
             :disabled="loginUserIsPending">
           </Button>
-        </AnimatedContainer>
+        </MotionContainer>
       </Form>
-    </AnimatedContainer>
+    </MotionContainer>
   </div>
 </template>

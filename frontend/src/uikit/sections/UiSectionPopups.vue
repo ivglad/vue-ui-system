@@ -3,7 +3,7 @@
 defineOptions({ name: 'UiSectionPopups' })
 
 // INFO: Для рендеринга через рендер функцию h() требуется импортировать компонент
-import LayoutUiTable from '@/layouts/ui/LayoutUiTable.vue'
+import UiSectionTable from '@/uikit/sections/UiSectionTable.vue'
 
 const confirm = useConfirm()
 const toast = useToast()
@@ -93,7 +93,7 @@ const drawerVisible = ref(false)
 const dialog = useDialog()
 
 const showComponent = () => {
-  dialog.open(h(LayoutUiTable), {
+  dialog.open(h(UiSectionTable), {
     props: {
       header: 'Компонент Table',
       modal: true,

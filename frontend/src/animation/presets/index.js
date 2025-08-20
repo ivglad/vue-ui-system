@@ -44,6 +44,10 @@ export const ANIMATION_TIMING = {
   fast: 0.15,
   normal: 0.25,
   slow: 0.4,
+  // Timings for list sequencing: layout shift, enter reveal and per-item stagger
+  layout: 0.35,
+  enter: 0.25,
+  stagger: 0.06,
   delays: { short: 0.05, medium: 0.1, long: 0.2 },
 }
 

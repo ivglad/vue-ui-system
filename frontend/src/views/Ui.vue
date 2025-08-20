@@ -174,25 +174,28 @@ const getAnimateOnScroll = (name) => {
         @prefetch="prefetch"
         @update:showAll="toggleAll" />
 
-      <div class="flex min-w-0 flex-1 flex-col items-start gap-8">
-        <LayoutGroup>
-          <AnimatePresence mode="popLayout">
-            <AnimatedContainer
-              v-for="(name, idx) in visibleSectionNames"
-              :key="name"
-              preset="fadeIn"
-              :index="idx"
-              class="w-full overflow-x-hidden">
-              <KeepAlive :include="includeList">
-                <component
-                  :is="AsyncSections[name]"
-                  v-bind="getComponentProps(name)"
-                  v-animateonscroll="getAnimateOnScroll(name)" />
-              </KeepAlive>
-            </AnimatedContainer>
-          </AnimatePresence>
-        </LayoutGroup>
-      </div>
+      <MotionGroup
+        class="flex flex-1 flex-col items-start gap-8"
+        presence-mode="sync"
+        layout>
+        <template #default>
+          <MotionContainer
+            v-for="(name, idx) in visibleSectionNames"
+            :key="name"
+            class="w-full overflow-hidden"
+            layout
+            item
+            preset="scaleIn"
+            presence-mode="wait"
+            :index="idx"
+            :reveal-delay="0.05">
+            <component
+              :is="AsyncSections[name]"
+              v-bind="getComponentProps(name)"
+              v-animateonscroll="getAnimateOnScroll(name)" />
+          </MotionContainer>
+        </template>
+      </MotionGroup>
     </div>
 
     <ScrollTop>

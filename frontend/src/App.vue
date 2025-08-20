@@ -53,13 +53,12 @@ router.beforeEach((to, from) => {
     </template>
   </Toast>
 
-  <main class="relative flex h-full w-full flex-col overflow-x-hidden">
+  <main
+    class="bg-surface-50 relative flex h-full w-full flex-col overflow-x-hidden">
     <router-view v-slot="{ Component, route }">
-      <AnimatePresence mode="wait">
-        <AnimatedContainer :key="route.path" preset="fadeIn">
-          <component :is="Component" />
-        </AnimatedContainer>
-      </AnimatePresence>
+      <MotionContainer :key="route.path" preset="fadeIn">
+        <component :is="Component" />
+      </MotionContainer>
     </router-view>
   </main>
 
