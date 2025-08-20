@@ -175,7 +175,7 @@ const getAnimateOnScroll = (name) => {
         @update:showAll="toggleAll" />
 
       <MotionGroup
-        class="flex flex-1 flex-col items-start gap-8"
+        class="flex flex-1 flex-col items-start gap-8 overflow-x-auto overflow-y-hidden"
         presence-mode="sync"
         layout>
         <template #default>
@@ -186,6 +186,7 @@ const getAnimateOnScroll = (name) => {
             layout
             item
             preset="scaleIn"
+            preset-enter="scaleIn"
             presence-mode="wait"
             :index="idx"
             :reveal-delay="0.05">
