@@ -3,11 +3,21 @@
 // - задаем дефолтный transition
 // - учитываем reduced motion (по умолчанию: 'never')
 const props = defineProps({
-  transition: { type: Object, default: null },
-  // 'user' | 'always' | 'never'
-  reduced: { type: String, default: 'never' },
+  /** Глобальный transition для MotionConfig */
+  transition: {
+    type: Object,
+    default: null,
+    validator: (v) => v == null || typeof v === 'object',
+  },
+  /** Политика reduced-motion: 'user' | 'always' | 'never' */
+  reduced: {
+    type: String,
+    default: 'never',
+    validator: (v) => ['user', 'always', 'never'].includes(v),
+  },
 })
 
+// Возвращает эффективный transition (из пропа или дефолтный)
 const effectiveTransition = computed(
   () => props.transition || { duration: 0.2 },
 )

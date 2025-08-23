@@ -8,24 +8,24 @@ export const elementPresets = {
     exit: { opacity: 0, transition: { duration: DURATION_XS } },
   },
   fadeInUp: {
-    initial: { y: 8, opacity: 0 },
+    initial: { y: 16, opacity: 0 },
     animate: { y: 0, opacity: 1, transition: { duration: DURATION_SM } },
-    exit: { y: 8, opacity: 0, transition: { duration: DURATION_XS } },
+    exit: { y: 16, opacity: 0, transition: { duration: DURATION_XS } },
   },
   fadeInDown: {
-    initial: { y: -8, opacity: 0 },
+    initial: { y: -16, opacity: 0 },
     animate: { y: 0, opacity: 1, transition: { duration: DURATION_SM } },
-    exit: { y: -8, opacity: 0, transition: { duration: DURATION_XS } },
+    exit: { y: -16, opacity: 0, transition: { duration: DURATION_XS } },
   },
   slideX: {
-    initial: { x: 12, opacity: 0 },
+    initial: { x: 16, opacity: 0 },
     animate: { x: 0, opacity: 1, transition: { duration: DURATION_SM } },
-    exit: { x: 12, opacity: 0, transition: { duration: DURATION_XS } },
+    exit: { x: 16, opacity: 0, transition: { duration: DURATION_XS } },
   },
   slideY: {
-    initial: { y: 12, opacity: 0 },
+    initial: { y: 16, opacity: 0 },
     animate: { y: 0, opacity: 1, transition: { duration: DURATION_SM } },
-    exit: { y: 12, opacity: 0, transition: { duration: DURATION_XS } },
+    exit: { y: 16, opacity: 0, transition: { duration: DURATION_XS } },
   },
   scaleIn: {
     initial: { scale: 0.96, opacity: 0 },

@@ -16,6 +16,7 @@ export const PRESETS = {
  * - 'list.spring.parent' (контейнер)
  * - 'list.spring.item' (элемент)
  */
+// Возвращает объект пресета по строковому пути
 export const getPresetByPath = (path) => {
   if (!path || typeof path !== 'string') return null
   const parts = path.split('.')
@@ -25,7 +26,16 @@ export const getPresetByPath = (path) => {
     if (!node) break
   }
   // Для 'list.spring' вернуть контейнер
-  if (node && node.parent && !('initial' in node || 'animate' in node || 'exit' in node || 'layout' in node)) {
+  if (
+    node &&
+    node.parent &&
+    !(
+      'initial' in node ||
+      'animate' in node ||
+      'exit' in node ||
+      'layout' in node
+    )
+  ) {
     return node.parent
   }
   // Для 'list.spring' если выше логика не сработала по какой-то причине
