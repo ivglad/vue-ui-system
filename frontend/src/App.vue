@@ -10,20 +10,8 @@ onUnmounted(() => {
   cleanupViewportFallback()
 })
 
-// Управление переходами между страницами
-const router = useRouter()
-const transitionType = ref('fade')
-
-// Определяем тип анимации на основе перехода
-router.beforeEach((to, from) => {
-  if (from.path === '/auth' && to.path === '/chat') {
-    transitionType.value = 'auth-to-chat'
-  } else if (from.path === '/chat' && to.path === '/auth') {
-    transitionType.value = 'chat-to-auth'
-  } else {
-    transitionType.value = 'fade'
-  }
-})
+// Пресеты переходов страниц из route.meta
+const { routeMotion } = useRouteMotion()
 </script>
 
 <template>
@@ -53,14 +41,21 @@ router.beforeEach((to, from) => {
     </template>
   </Toast>
 
-  <main
-    class="bg-surface-50 relative flex h-full w-full flex-col overflow-x-hidden">
-    <router-view v-slot="{ Component, route }">
-      <MotionContainer :key="route.path" preset="fadeIn">
-        <component :is="Component" />
-      </MotionContainer>
-    </router-view>
-  </main>
+  <AMotionProvider>
+    <main
+      class="bg-surface-50 relative flex h-full w-full flex-col overflow-hidden">
+      <router-view v-slot="{ Component, route }">
+        <AnimatePresence mode="wait">
+          <Motion
+            :key="route.fullPath"
+            v-bind="routeMotion(route)"
+            class="overflow-y-auto">
+            <component :is="Component" />
+          </Motion>
+        </AnimatePresence>
+      </router-view>
+    </main>
+  </AMotionProvider>
 
   <DynamicDialog />
   <ConfirmDialog group="confirm" pt:root:class="app-confirm-modified" />

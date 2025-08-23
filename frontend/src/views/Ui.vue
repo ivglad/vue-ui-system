@@ -1,4 +1,7 @@
 <script setup>
+import AMotion from '@/animation/components/AMotion.vue'
+import AMotionList from '@/animation/components/AMotionList.vue'
+
 // Динамическая карта асинхронных секций из директории `@/uikit/sections/`
 const sectionEntries = Object.entries(
   import.meta.glob('@/uikit/sections/*.vue', {
@@ -125,18 +128,6 @@ const getComponentProps = (name) => {
   }
   return {}
 }
-
-// Директивы/атрибуты для отдельных секций (например, Carousel)
-const getAnimateOnScroll = (name) => {
-  if (name === 'UiSectionCarousel') {
-    return {
-      enterClass: 'animate-fadein',
-      leaveClass: 'animate-fadeout',
-    }
-  }
-  // Директива ожидает объект; undefined приводит к попытке чтения свойств
-  return {}
-}
 </script>
 
 <template>
@@ -174,29 +165,18 @@ const getAnimateOnScroll = (name) => {
         @prefetch="prefetch"
         @update:showAll="toggleAll" />
 
-      <MotionGroup
-        class="flex flex-1 flex-col items-start gap-8 overflow-x-auto overflow-y-hidden"
-        presence-mode="sync"
-        layout>
-        <template #default>
-          <MotionContainer
-            v-for="(name, idx) in visibleSectionNames"
-            :key="name"
-            class="w-full overflow-hidden"
-            layout
-            item
-            preset="scaleIn"
-            preset-enter="scaleIn"
-            presence-mode="wait"
-            :index="idx"
-            :reveal-delay="0.05">
-            <component
-              :is="AsyncSections[name]"
-              v-bind="getComponentProps(name)"
-              v-animateonscroll="getAnimateOnScroll(name)" />
-          </MotionContainer>
-        </template>
-      </MotionGroup>
+      <AMotionList
+        class="flex w-full flex-col items-start gap-8 overflow-x-auto overflow-y-hidden">
+        <AMotion
+          v-for="name in visibleSectionNames"
+          :key="name"
+          class=""
+          preset="list.spring">
+          <component
+            :is="AsyncSections[name]"
+            v-bind="getComponentProps(name)" />
+        </AMotion>
+      </AMotionList>
     </div>
 
     <ScrollTop>

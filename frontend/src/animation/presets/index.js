@@ -1,85 +1,37 @@
+// Агрегация всех пресетов и функции поиска по имени
+import elementPresets from './element.js'
+import listPresets from './list.js'
+import pagePresets from './page.js'
+
+export const PRESETS = {
+  element: elementPresets,
+  list: listPresets,
+  page: pagePresets,
+}
+
 /**
- * Централизованные пресеты и константы анимаций
+ * Возвращает пресет по строковому пути, например:
+ * - 'element.fade'
+ * - 'list.spring' (контейнер)
+ * - 'list.spring.parent' (контейнер)
+ * - 'list.spring.item' (элемент)
  */
-
-// ==========================================================================
-// Animation Presets
-// ==========================================================================
-
-export const ANIMATION_PRESETS = {
-  fadeIn: {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-    exit: { opacity: 0 },
-    transition: { duration: 0.2 },
-  },
-
-  slideUp: {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 },
-    transition: { duration: 0.25, ease: 'easeOut' },
-  },
-
-  slideDown: {
-    initial: { opacity: 0, y: -20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: 20 },
-    transition: { duration: 0.25, ease: 'easeOut' },
-  },
-
-  scaleIn: {
-    initial: { opacity: 0, scale: 0.9 },
-    animate: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.9 },
-    transition: { duration: 0.2, ease: 'easeOut' },
-  },
-}
-
-// ==========================================================================
-// Animation Timing Constants
-// ==========================================================================
-
-export const ANIMATION_TIMING = {
-  fast: 0.15,
-  normal: 0.25,
-  slow: 0.4,
-  // Timings for list sequencing: layout shift, enter reveal and per-item stagger
-  layout: 0.35,
-  enter: 0.25,
-  stagger: 0.06,
-  delays: { short: 0.05, medium: 0.1, long: 0.2 },
-}
-
-// ==========================================================================
-// Easing Functions
-// ==========================================================================
-
-export const EASING = {
-  easeOut: 'easeOut',
-  easeIn: 'easeIn',
-  easeInOut: 'easeInOut',
-  smooth: [0.25, 0.1, 0.25, 1],
-  snappy: [0.4, 0, 0.2, 1],
-  gentle: [0.25, 0.46, 0.45, 0.94],
-}
-
-// ==========================================================================
-// Animation Variants
-// ==========================================================================
-
-export const ANIMATION_VARIANTS = {
-  staggeredList: {
-    container: {
-      animate: {
-        transition: { staggerChildren: 0.1, delayChildren: 0.1 },
-      },
-    },
-    item: {
-      initial: { opacity: 0, y: 20 },
-      animate: { opacity: 1, y: 0 },
-      exit: { opacity: 0, y: -20 },
-      transition: { duration: 0.3, ease: 'easeOut' },
-    },
-  },
+export const getPresetByPath = (path) => {
+  if (!path || typeof path !== 'string') return null
+  const parts = path.split('.')
+  let node = PRESETS
+  for (const p of parts) {
+    node = node?.[p]
+    if (!node) break
+  }
+  // Для 'list.spring' вернуть контейнер
+  if (node && node.parent && !('initial' in node || 'animate' in node || 'exit' in node || 'layout' in node)) {
+    return node.parent
+  }
+  // Для 'list.spring' если выше логика не сработала по какой-то причине
+  if (!node && parts.length === 2 && parts[0] === 'list') {
+    const grp = PRESETS.list?.[parts[1]]
+    if (grp?.parent) return grp.parent
+  }
+  return node ?? null
 }
